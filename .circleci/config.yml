@@ -9,6 +9,7 @@ jobs:
       - run: ls -la
       - run: cd us-east-1/dev/
       - run: ls us-east-1/dev/
+      - run: tfswitch 1.1.7
       - run: tgswitch 0.36.6
       - run: terragrunt run-all plan
 
