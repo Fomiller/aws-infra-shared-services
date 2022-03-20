@@ -2,7 +2,7 @@ version: 2
 jobs:
   one:
     docker:
-      - image: cimg/ruby:3.0.2
+      - image: fomiller/megatainer:latest
         auth:
           username: $DOCKERHUB_USER
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
@@ -22,7 +22,7 @@ jobs:
             - echo-output
   two:
     docker:
-      - image: cimg/ruby:3.0.2
+      - image: fomiller/megatainer:latest
         auth:
           username:  $DOCKERHUB_USER
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
