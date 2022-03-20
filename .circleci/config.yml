@@ -41,6 +41,8 @@ jobs:
       - run: ls -la ~
       - run: ls -la ~/.terragrunt.versions/
       - run: ls -la ~/.terraform.versions/
+      - run: tfswitch 1.1.6
+      - run: tgswitch 0.36.1
       - run: cd us-east-1/dev/
       - run: terragrunt run-all plan
       - persist_to_workspace:
@@ -55,6 +57,8 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ../
+      - run: tfswitch 1.1.6
+      - run: tgswitch 0.36.1
       - run: cd us-east-1/dev/
       - run: terragrunt run-all apply --terragrunt-non-interactive
 
