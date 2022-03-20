@@ -15,6 +15,7 @@ jobs:
       - run: cd us-east-1/dev/
       - run: terragrunt run-all init
       - run: terragrunt run-all plan
+      - run: terragrunt run-all apply
 
   one:
     docker:
