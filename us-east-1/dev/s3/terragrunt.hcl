@@ -8,7 +8,7 @@ locals {
 
 terraform {
 
-  source = "../../../modules/aws//lambda"
+  source = "../../../modules/aws//s3"
 }
 
 include "root" {
