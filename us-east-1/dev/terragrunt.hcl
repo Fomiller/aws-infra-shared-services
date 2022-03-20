@@ -1,3 +1,8 @@
+locals {
+  region_vars       = read_terragrunt_config(find_in_parent_folders("region.hcl"))
+  aws_region  = local.region_vars.locals.aws_region
+}
+
 generate provider {
   path      = "provider"
   if_exists = "overwrite_terragrunt"
@@ -7,10 +12,9 @@ provider "aws" {
   default_tags {
     tags = {
       email = "forrestmillerj@gmail.com"
-      environment = "${local.environment}"
+    }
   }
-  }
-  }
+}
 EOF
 }
 
@@ -41,15 +45,10 @@ terraform {
 }
 
 inputs = merge(
-  local.account_vars.locals,
   local.region_vars.locals,
-  local.environment_vars.locals,
   {
     app_prefix = "fomiller"
     extra_tags = {
-      Environment = local.environment
-      AccountId   = local.account_id
-      Region      = local.aws_region
     }
   }
 )
