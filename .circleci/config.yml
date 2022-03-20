@@ -3,6 +3,9 @@ jobs:
   plan:
     docker:
       - image: fomiller/megatainer:latest
+        aws_auth:
+          aws_access_key_id: $AWS_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
     steps:
       - checkout
       - run: pwd
