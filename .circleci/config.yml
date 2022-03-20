@@ -9,8 +9,8 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
     steps:
       - checkout
-      - run: tfswitch 1.1.7
-      - run: tgswitch 0.36.6
+      - run: tfswitch 0.13.6
+      - run: tgswitch 0.36.1
       - run: cd us-east-1/dev/
       - run: terragrunt run-all init
       - run: terragrunt run-all plan
