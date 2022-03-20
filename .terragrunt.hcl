@@ -5,7 +5,8 @@ generate provider {
 provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::123456789:role/terragrunt"
-    }  default_tags {
+  }
+  default_tags {
   region = "${local.aws_region}"
   tags = {
       email = "forrestmillerj@gmail.com"
