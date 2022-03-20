@@ -8,6 +8,8 @@ jobs:
       - run: pwd
       - run: ls -la
       - run: cd us-east-1/dev/
+      - run: ls us-east-1/dev/
+      - run: tgswitch 0.36.6
       - run: terragrunt run-all plan
 
   one:
