@@ -24,6 +24,7 @@ jobs:
       - run: pwd
       - run: ls -la
       - run: ls ~/.aws/
+      - run: cat ~/.aws/credentials
   plan:
     docker:
       - image: fomiller/megatainer:latest
