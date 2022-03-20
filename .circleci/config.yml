@@ -11,35 +11,49 @@ jobs:
       - persist_to_workspace:
           root: ../
           paths:
-            - ./.aws/
-  persist:
+            - ./*
+
+  terraform validate:
     docker:
       - image: fomiller/megatainer:latest
     steps:
       - checkout
-      - run: pwd
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ../
+      - run: tfswitch 1.1.6
+      - run: tgswitch 0.36.1
+      - run: cd us-east-1/dev/
+      - run: terragrunt run-all validate
+      - persist_to_workspace:
+          root: ../
+          paths:
+            - ./*
+
+  terraform init and plan:
+    docker:
+      - image: fomiller/megatainer:latest
+    steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ../
       - run: pwd
       - run: ls -la
-      - run: ls ~/.aws/
-      - run: cat ~/.aws/credentials
-  plan:
+      - run: cd us-east-1/dev/
+      - run: terragrunt run-all init
+      - persist_to_workspace:
+          root: ../
+          paths:
+            - ./*
+
+  terraform plan:
     docker:
       - image: fomiller/megatainer:latest
     steps:
-      - checkout
-      - run:
-          command: |
-              aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE
-              aws configure set aws_secret_access_key $AWS_SECRET_KEY_ACCESS_KEY --profile $AWS_PROFILE
-      - run: cat ~/.aws/credentials
-      - run: tfswitch 1.1.6
-      - run: tgswitch 0.36.1
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ../
       - run: cd us-east-1/dev/
-      - run: terragrunt run-all init
-      - run: terragrunt run-all plan
       - run: terragrunt run-all apply --terragrunt-non-interactive
 
   one:
@@ -81,15 +95,18 @@ jobs:
           else
             echo "Nope!"; exit 1
           fi
+          
 workflows:
   version: 2
   one_and_two:
     jobs:
       - aws login
-      - persist:
+      - terraform validate:
           requires:
             - aws login
-      # - one
-      # - two:
-      #     requires:
-      #       - one
+      - terraform init and plan:
+          requires:
+            - terraform validate
+      - terraform apply:
+          requires:
+            - terraform init and plan
