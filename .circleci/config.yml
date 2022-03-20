@@ -7,14 +7,8 @@ jobs:
       - checkout
       - run:
           command: |
-              AWS_CLI_ACCESS_KEY_ID=$(eval echo "\$$AWS_ACCESS_KEY_ID")
-              AWS_CLI_SECRET_ACCESS_KEY=$(eval echo "\$$AWS_ACCESS_KEY")
-              aws configure set aws_access_key_id \
-                  $AWS_CLI_ACCESS_KEY_ID \
-                  --profile $AWS_PROFILE
-              aws configure set aws_secret_access_key \
-                  $AWS_CLI_SECRET_ACCESS_KEY\
-                  --profile $AWS_PROFILE
+              aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE
+              aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile $AWS_PROFILE
       - run: cat ~/.aws/credentials
       - run: tfswitch 0.13.6
       - run: tgswitch 0.36.1
