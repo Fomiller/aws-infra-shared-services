@@ -4,7 +4,7 @@ generate provider {
   contents  = <<EOF
 provider "aws" {
   assume_role {
-    role_arn = "arn:aws:iam::123456789:role/terragrunt"
+    role_arn = "arn:aws:iam::123456789:role/admin"
   }
   default_tags {
   region = "${local.aws_region}"
