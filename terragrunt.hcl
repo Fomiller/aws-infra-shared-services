@@ -3,9 +3,11 @@ generate provider {
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 provider "aws" {
+  assume_role {
+    role_arn = "arn:aws:iam::123456789:role/terragrunt"
+    }  default_tags {
   region = "${local.aws_region}"
-  default_tags {
-    tags = {
+  tags = {
       email = "forrestmillerj@gmail.com"
       environment = "${local.environment}"
   }
