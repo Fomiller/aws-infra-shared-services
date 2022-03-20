@@ -22,7 +22,7 @@ jobs:
           # Must be absolute path or relative path from working_directory
           at: .
       - run: pwd
-      - run: ls ~/
+      - run: ls ~/.aws/
   plan:
     docker:
       - image: fomiller/megatainer:latest
