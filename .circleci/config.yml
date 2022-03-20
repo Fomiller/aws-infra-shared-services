@@ -46,7 +46,7 @@ jobs:
           paths:
             - ./*
 
-  terraform plan:
+  terraform apply:
     docker:
       - image: fomiller/megatainer:latest
     steps:
