@@ -13,7 +13,7 @@ jobs:
           paths:
             - ./*
 
-  terraform validate:
+  terraform init and validate:
     docker:
       - image: fomiller/megatainer:latest
     steps:
@@ -30,7 +30,7 @@ jobs:
           paths:
             - ./*
 
-  terraform init and plan:
+  terraform plan:
     docker:
       - image: fomiller/megatainer:latest
     steps:
@@ -38,7 +38,7 @@ jobs:
           # Must be absolute path or relative path from working_directory
           at: ../
       - run: pwd
-      - run: ls -la
+      - run: ls -la ~
       - run: cd us-east-1/dev/
       - run: terragrunt run-all init
       - persist_to_workspace:
@@ -101,12 +101,12 @@ workflows:
   one_and_two:
     jobs:
       - aws login
-      - terraform validate:
+      - terraform init and validate:
           requires:
             - aws login
-      - terraform init and plan:
+      - terraform plan:
           requires:
-            - terraform validate
+            - terraform init and validate
       - terraform apply:
           requires:
-            - terraform init and plan
+            - terraform plan
