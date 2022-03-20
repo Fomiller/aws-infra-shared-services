@@ -15,7 +15,7 @@ jobs:
                   --profile $AWS_PROFILE
               aws configure set aws_secret_access_key \
                   $AWS_SECRET_ACCESS_KEY\
-                  --profile $AWS_PROFILE AWS_DEFAULT_REGION: us-east-1
+                  --profile $AWS_PROFILE
       - run: cat ~/.aws/credentials
       - run: tfswitch 0.13.6
       - run: tgswitch 0.36.1
