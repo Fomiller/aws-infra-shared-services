@@ -4,12 +4,12 @@ locals {
 }
 
 generate provider {
-  path      = "provider"
+  path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 provider "aws" {
   version = "~>3.0"
-  region = "${local.aws_region}"
+  region = "us-east-1"
   profile = "default"
   default_tags {
     tags = {
