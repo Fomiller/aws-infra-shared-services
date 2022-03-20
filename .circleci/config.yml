@@ -1,5 +1,28 @@
 version: 2
 jobs:
+  aws login:
+    docker:
+      - image: fomiller/megatainer:latest
+    steps:
+      - run:
+          command: |
+              aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE
+              aws configure set aws_secret_access_key $AWS_SECRET_KEY_ACCESS_KEY --profile $AWS_PROFILE
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./.aws/
+  persist:
+    docker:
+      - image: fomiller/megatainer:latest
+    steps:
+      - checkout
+      - run: pwd
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: .
+      - run: pwd
+      - run: ls ~/
   plan:
     docker:
       - image: fomiller/megatainer:latest
@@ -60,7 +83,10 @@ workflows:
   version: 2
   one_and_two:
     jobs:
-      - plan
+      - aws login
+      - persist:
+          requires:
+            - aws login
       # - one
       # - two:
       #     requires:
