@@ -20,8 +20,9 @@ jobs:
       - run: pwd
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: .
+          at: ../
       - run: pwd
+      - run: ls -la
       - run: ls ~/.aws/
   plan:
     docker:
