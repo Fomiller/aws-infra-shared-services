@@ -6,9 +6,17 @@ jobs:
     environment:
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-      AWS_DEFAULT_REGION: us-east-1
     steps:
       - checkout
+      - run:
+          command: |
+              aws configure set aws_access_key_id \
+                  $AWS_ACCESS_KEY_ID \
+                  --profile $AWS_PROFILE
+              aws configure set aws_secret_access_key \
+                  $AWS_SECRET_ACCESS_KEY\
+                  --profile $AWS_PROFILE AWS_DEFAULT_REGION: us-east-1
+      - run: cat ~/.aws/credentials
       - run: tfswitch 0.13.6
       - run: tgswitch 0.36.1
       - run: cd us-east-1/dev/

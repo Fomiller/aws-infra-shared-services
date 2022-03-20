@@ -36,17 +36,6 @@ remote_state {
   }
 }
 
-terraform {
-  extra_arguments "common_vars" {
-    commands = get_terraform_commands_that_need_vars()
-
-    /* arguments = [ */
-    /*   "-var-file=../common.tfvars", */
-    /*   "-var-file=../region.tfvars" */
-    /* ] */
-  }
-}
-
 inputs = merge(
   local.region_vars.locals,
   {
