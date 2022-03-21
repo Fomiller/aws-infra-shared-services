@@ -8,6 +8,8 @@ jobs:
           command: |
               aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE
               aws configure set aws_secret_access_key $AWS_SECRET_KEY_ACCESS_KEY --profile $AWS_PROFILE
+      - run: terraform --version
+      - run: terragrunt --version
       - persist_to_workspace:
           root: ../
           paths:
@@ -35,10 +37,6 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ../
-      - run: pwd
-      - run: ls -la ~
-      - run: ls -la ~/.terragrunt.versions/
-      - run: ls -la ~/.terraform.versions/
       - run: cd us-east-1/dev/
       - run: terragrunt run-all plan
       - persist_to_workspace:
