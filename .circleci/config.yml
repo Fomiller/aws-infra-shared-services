@@ -21,7 +21,6 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ../
-      - run: pwd
       - run:
           working_directory: us-east-1/dev/
           command: |
@@ -38,8 +37,10 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ../
-      - run: cd us-east-1/dev/
-      - run: terragrunt run-all plan
+      - run:
+          working_directory: us-east-1/dev/
+          command: |
+            terragrunt run-all plan
       - persist_to_workspace:
           root: ../
           paths:
@@ -52,8 +53,10 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ../
-      - run: cd us-east-1/dev/
-      - run: terragrunt run-all apply --terragrunt-non-interactive
+      - run:
+          working_directory: us-east-1/dev/
+          command: |
+            terragrunt run-all apply --terragrunt-non-interactive
           
 workflows:
   version: 2
