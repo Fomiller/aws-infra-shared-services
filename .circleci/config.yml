@@ -8,8 +8,6 @@ jobs:
           command: |
               aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE
               aws configure set aws_secret_access_key $AWS_SECRET_KEY_ACCESS_KEY --profile $AWS_PROFILE
-      - run: terraform --version
-      - run: terragrunt --version
       - persist_to_workspace:
           root: ../
           paths:
@@ -23,7 +21,8 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ../
-      - run: cd us-east-1/dev/
+      - working_directory: us-east-1/dev/
+      - run: pwd
       - run: terragrunt run-all validate
       - persist_to_workspace:
           root: ../
@@ -53,46 +52,6 @@ jobs:
           at: ../
       - run: cd us-east-1/dev/
       - run: terragrunt run-all apply --terragrunt-non-interactive
-
-  one:
-    docker:
-      - image: fomiller/megatainer:latest
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    steps:
-      - checkout
-      - run: echo "A first hello"
-      - run: pwd
-      - run: ls -la
-      - run: mkdir -p my_workspace
-      - run: echo "Trying out workspaces" > my_workspace/echo-output
-      - run: ls ./my_workspace
-      - persist_to_workspace:
-          # Must be an absolute path, or relative path from working_directory
-          root: my_workspace
-          # Must be relative path from root
-          paths:
-            - echo-output
-  two:
-    docker:
-      - image: fomiller/megatainer:latest
-        auth:
-          username:  $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    steps:
-      - checkout
-      - run: echo "A more familiar hi"
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: my_workspace
-      - run: ls -la
-      - run: |
-          if [[ $(cat my_workspace/echo-output) == "Trying out workspaces" ]]; then
-            echo "It worked!";
-          else
-            echo "Nope!"; exit 1
-          fi
           
 workflows:
   version: 2
