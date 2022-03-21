@@ -1,26 +1,84 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+version: 2
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  aws login:
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: fomiller/megatainer:latest
+    environment:
+      AWS_PROFILE: default
+    steps:
+      - run:
+          command: |
+              aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE
+              aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile $AWS_PROFILE
+      - persist_to_workspace:
+          root: ../
+          paths:
+            - ./*
+
+  terraform init and validate:
+    docker:
+      - image: fomiller/megatainer:latest
     steps:
       - checkout
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ../
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          working_directory: us-east-1/dev/
+          command: |
+            terragrunt run-all validate
+      - persist_to_workspace:
+          root: ../
+          paths:
+            - ./*
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  terraform plan:
+    docker:
+      - image: fomiller/megatainer:latest
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ../
+      - run:
+          working_directory: us-east-1/dev/
+          command: |
+            terragrunt run-all plan
+      - persist_to_workspace:
+          root: ../
+          paths:
+            - ./*
+
+  terraform apply:
+    docker:
+      - image: fomiller/megatainer:latest
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ../
+      - run:
+          working_directory: us-east-1/dev/
+          command: |
+            terragrunt run-all apply --terragrunt-non-interactive
+          
 workflows:
-  say-hello-workflow:
+  version: 2
+  Terraform Deploy:
     jobs:
-      - say-hello
+      - aws login:
+          context:
+            - aws-credentials
+      - terraform init and validate:
+          context:
+            - aws-credentials
+          requires:
+            - aws login
+      - terraform plan:
+          context:
+            - aws-credentials
+          requires:
+            - terraform init and validate
+      - terraform apply:
+          context:
+            - aws-credentials
+          requires:
+            - terraform plan
