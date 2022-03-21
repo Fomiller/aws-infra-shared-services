@@ -68,11 +68,17 @@ workflows:
           context:
             - aws-credentials
       - terraform init and validate:
+          context:
+            - aws-credentials
           requires:
             - aws login
       - terraform plan:
+          context:
+            - aws-credentials
           requires:
             - terraform init and validate
       - terraform apply:
+          context:
+            - aws-credentials
           requires:
             - terraform plan
