@@ -64,19 +64,15 @@ workflows:
   version: 2
   Terraform Deploy:
     jobs:
-      - aws login
-      - terraform init and validate:
+      - aws login:
           context:
             - aws-credentials
+      - terraform init and validate:
           requires:
             - aws login
       - terraform plan:
-          context:
-            - aws-credentials
           requires:
             - terraform init and validate
       - terraform apply:
-          context:
-            - aws-credentials
           requires:
             - terraform plan
