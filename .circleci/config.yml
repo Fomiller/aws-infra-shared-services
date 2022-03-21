@@ -21,9 +21,11 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ../
-      - working_directory: us-east-1/dev/
       - run: pwd
-      - run: terragrunt run-all validate
+      - run:
+          working_directory: us-east-1/dev/
+          command: |
+            terragrunt run-all validate
       - persist_to_workspace:
           root: ../
           paths:
