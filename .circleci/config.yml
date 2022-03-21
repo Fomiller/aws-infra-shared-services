@@ -3,6 +3,8 @@ jobs:
   aws login:
     docker:
       - image: fomiller/megatainer:latest
+    environment:
+      AWS_PROFILE: default
     steps:
       - run:
           command: |
@@ -60,15 +62,21 @@ jobs:
           
 workflows:
   version: 2
-  one_and_two:
+  Terraform Deploy:
     jobs:
       - aws login
       - terraform init and validate:
+          context:
+            - aws-credentials
           requires:
             - aws login
       - terraform plan:
+          context:
+            - aws-credentials
           requires:
             - terraform init and validate
       - terraform apply:
+          context:
+            - aws-credentials
           requires:
             - terraform plan
