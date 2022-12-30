@@ -5,7 +5,6 @@ locals {
   environment = local.environment_vars.locals.environment
   account_id  = local.account_vars.locals.account_id
 }
-
 terraform {
 
   source = "../../../modules/aws//lambda"
