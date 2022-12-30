@@ -5,7 +5,8 @@ name: 'Terragrunt Deploy'
 on:
   push:
     paths:
-      - 'src/**'
+      - 'modules/**'
+      - 'us-east-1/**'
     branches:
       - 'main'
       - 'master'
