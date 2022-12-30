@@ -64,16 +64,18 @@ jobs:
         cd us-east-1/dev
         terragrunt run-all plan
         
+    # use if you need to debug workflow
+    - name: DEBUG
+      uses: lhotari/action-upterm@v1
+      with:
+         limit-access-to-actor: true
+          # limit-access-to-users: Fomiller
+        
     - name: Terragrunt Apply
       continue-on-error: false
       run: |
         cd us-east-1/dev
         terragrunt run-all apply --terragrunt-non-interactive
         
-    # use if you need to debug workflow
-    # - name: DEBUG
-    #   uses: lhotari/action-upterm@v1
-    #   with:
-    #       limit-access-to-actor: true
-          # limit-access-to-users: Fomiller
+
 
