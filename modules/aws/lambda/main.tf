@@ -1,3 +1,14 @@
+# module "congocoon" {
+#  source = "git::https://github.com/Fomiller/tf-module-lambda.git" 
+#  function_name    = var.lambda_name
+#  role             = var.lambda_role
+#  filename         = var.filename
+#  handler          = var.handler
+#  source_code_hash = var.source_code_hash
+#  runtime          = var.runtime
+#  memory_size      = var.memory_size
+#  timeout          = var.timeout
+# }
 resource "aws_lambda_function" "lambda" {
   function_name    = "fomiller-congocoon-scraper"
   role             = aws_iam_role.lambda_role.arn
@@ -90,5 +101,3 @@ resource "aws_lambda_permission" "lambda_permission" {
   source_arn    = aws_cloudwatch_event_rule.lambda.arn
 
 }
-
-

@@ -20,3 +20,6 @@
 
 #env files
 env.list
+.env.list
+.env
+

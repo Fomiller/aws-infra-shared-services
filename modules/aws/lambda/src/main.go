@@ -170,7 +170,7 @@ func sendEmail() {
 	password := "bekveqitvlyvgtoy"
 
 	// toList is list of email address that email is to be sent.
-	toList := []string{"forrestmillerj@gmail.com"}
+	toList := []string{"forrestmillerj@gmail.com", "juliettermiller@gmail.com", "millergrayson0@gmail.com"}
 
 	// host is address of server that the
 	// sender's email address belongs,
