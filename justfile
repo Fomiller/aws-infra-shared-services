@@ -1,4 +1,4 @@
-infraDir := "us-east-1/"
+infraDir := "infra/us-east-1/"
 
 login env:
     assume-role login -p {{env}}Terraform
