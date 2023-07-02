@@ -1,14 +1,3 @@
-# module "congocoon" {
-#  source = "git::https://github.com/Fomiller/tf-module-lambda.git" 
-#  function_name    = var.lambda_name
-#  role             = var.lambda_role
-#  filename         = var.filename
-#  handler          = var.handler
-#  source_code_hash = var.source_code_hash
-#  runtime          = var.runtime
-#  memory_size      = var.memory_size
-#  timeout          = var.timeout
-# }
 resource "aws_lambda_function" "lambda" {
   function_name    = "fomiller-congocoon-scraper"
   role             = aws_iam_role.lambda_role.arn
@@ -101,3 +90,14 @@ resource "aws_lambda_permission" "lambda_permission" {
   source_arn    = aws_cloudwatch_event_rule.lambda.arn
 
 }
+
+resource "aws_secretsmanager_secret" "gmail_congocoon_pass" {
+  name       = "fomiller-terraform-dev-creds"
+  kms_key_id = var.chat_stat_master_kms_key_arn
+}
+
+resource "aws_secretsmanager_secret_version" "gmail_congocoon_pass" {
+  secret_id = aws_secretsmanager_secret.gmail_congocoon_pass.id
+  secret_string = var.gmail_congocoon_pass
+}
+
