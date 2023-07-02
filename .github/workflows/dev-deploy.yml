@@ -51,6 +51,13 @@ jobs:
       with:
         terraform_version: ${{ env.TF_VERSION }}
         terraform_wrapper: false
+          # 
+    # use if you need to debug workflow
+    - name: DEBUG
+      uses: lhotari/action-upterm@v1
+      with:
+         limit-access-to-actor: true
+         limit-access-to-users: Fomiller
           
     - name: Install Terragrunt ${{ env.TG_VERSION }}
       run: |
@@ -68,9 +75,3 @@ jobs:
       run: |
         terragrunt run-all apply --terragrunt-working-dir ${{env.INFRA_DIR}} --terragrunt-non-interactive
         
-    # use if you need to debug workflow
-    # - name: DEBUG
-    #   uses: lhotari/action-upterm@v1
-    #   with:
-    #      limit-access-to-actor: true
-          # limit-access-to-users: Fomiller
