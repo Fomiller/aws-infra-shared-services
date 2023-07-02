@@ -92,7 +92,7 @@ resource "aws_lambda_permission" "lambda_permission" {
 }
 
 resource "aws_secretsmanager_secret" "gmail_congocoon_pass" {
-  name       = "fomiller-terraform-dev-creds"
+  name       = "gmail-congocoon-pass"
   kms_key_id = data.aws_kms_key.chat_stat_master_kms_key.arn
 }
 
