@@ -21,49 +21,57 @@ jobs:
       TF_VAR_gmail_congocoon_pass: ${{ secrets.GMAIL_CONGOCOON_PASSWORD}}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
-      AWS_PROFILE: saml
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID_DEV }}
+      AWS_DEPLOYER_ROLE: ${{ secrets.DEPLOYER_ROLE }}
       AWS_DEFAULT_REGION: us-east-1
       AWS_DEFAULT_OUTPUT: json
+      TG_VERSION: v0.42.8
+      TF_VERSION: latest
+      INFRA_DIR: infra/us-east-1/dev
+
+
 
     steps:
-    - name: AWS    
-      run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_DEV }} --profile saml
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }} --profile saml
+    # - name: AWS    
+    #   run: |
+    #       aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_DEV }} --profile saml
+    #       aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }} --profile saml
+          
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{env.AWS_ACCESS_KEY_ID}}
+        aws-secret-access-key: ${{env.AWS_SECRET_ACCESS_KEY}}
+        role-to-assume: arn:aws:iam::${{env.AWS_ACCOUNT_ID}}:role/${{env.AWS_DEPLOYER_ROLE}}
+        aws-region: ${{env.AWS_DEFAULT_REGION}}
+        role-duration-seconds: 1200
 
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
 
     # Install the latest version of Terragrunt CLI and configure the Terragrunt CLI configuration file with a Terragrunt Cloud user API toke
-    - name: Install Terraform
+    - name: Install Terraform ${{ env.TF_VERSION }}
       uses: hashicorp/setup-Terraform@v1
       with:
-        terraform_version: latest
+        terraform_version: ${{ env.TF_VERSION }}
+        terraform_wrapper: false
           
-    - name: Install Terragrunt v0.36.1
+    - name: Install Terragrunt ${{ env.TG_VERSION }}
       run: |
-        sudo wget -q -O /bin/terragrunt "https://github.com/gruntwork-io/terragrunt/releases/download/v0.36.1/terragrunt_linux_amd64"
+        sudo wget -q -O /bin/terragrunt "https://github.com/gruntwork-io/terragrunt/releases/download/${{ env.TG_VERSION }}/terragrunt_linux_amd64"
         sudo chmod +x /bin/terragrunt
 
     # Initialize a new or existing Terragrunt working directory by creating initial files,  loading any remote state, downloading modules, etc.
     - name: Terragrunt Validate
       continue-on-error: false
       run: |
-        cd us-east-1/dev
-        terragrunt run-all validate
+        terragrunt run-all validate --terragrunt-working-dir ${{env.INFRA_DIR}}
         
-    - name: Terragrunt Init
+    - name: Terragrunt Apply
       continue-on-error: false
       run: |
-        cd us-east-1/dev
-        terragrunt run-all init
-        
-    - name: Terragrunt Plan
-      continue-on-error: false
-      run: |
-        cd us-east-1/dev
-        terragrunt run-all plan
+        terragrunt run-all apply --terragrunt-working-dir ${{env.INFRA_DIR}} --terragrunt-non-interactive
         
     # use if you need to debug workflow
     # - name: DEBUG
@@ -71,12 +79,3 @@ jobs:
     #   with:
     #      limit-access-to-actor: true
           # limit-access-to-users: Fomiller
-        
-    - name: Terragrunt Apply
-      continue-on-error: false
-      run: |
-        cd us-east-1/dev
-        terragrunt run-all apply --terragrunt-non-interactive
-        
-
-
