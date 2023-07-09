@@ -14,8 +14,8 @@ on:
       - '!main'
       - '!master'
         
-# env:
-#   TF_VAR_gmail_congocoon_pass: ${{ secrets.GMAIL_CONGOCOON_PASSWORD}}
+env:
+  gmail_pass: ${{ secrets.GMAIL_CONGOCOON_PASSWORD}}
 #   AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
 #   AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
 #   AWS_ACCOUNT_ID: ${{ secrets.DEV_AWS_ACCOUNT }}
@@ -32,7 +32,7 @@ jobs:
     uses: fomiller-org/gh-actions/.github/workflows/terragrunt.yaml@main
     with:
       environment: dev
-      gmail_pass: ${{ secrets.GMAIL_CONGOCOON_PASSWORD }}
+      gmail_pass: ${{ env.gmail_pass }}
     secrets: 
       aws-access-key-id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
       aws-secret-access-KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
