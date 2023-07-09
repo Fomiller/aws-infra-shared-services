@@ -29,7 +29,7 @@ on:
     
 jobs:
   deploy-infra:
-    uses: fomiller-org/gh-actions/.github/workflows/terragrunt.yaml@v1
+    uses: fomiller-org/gh-actions/.github/workflows/terragrunt.yaml@main
     with:
       environment: dev
     secrets: 
