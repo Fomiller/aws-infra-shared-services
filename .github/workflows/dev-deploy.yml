@@ -37,3 +37,4 @@ jobs:
       aws-secret-access-KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
       aws-account-id: ${{ secrets.DEV_AWS_ACCOUNT }}
       aws-deployer-role: ${{ secrets.AWS_DEPLOYER_ROLE }}
+        
