@@ -32,9 +32,5 @@ jobs:
     with:
       environment: dev
     secrets: 
-      aws-access-key-id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
-      aws-secret-access-KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
-      aws-account-id: ${{ secrets.DEV_AWS_ACCOUNT }}
-      aws-deployer-role: ${{ secrets.AWS_DEPLOYER_ROLE }}
       gmail_pass: ${{ secrets.GMAIL_CONGOCOON_PASSWORD }}
         
