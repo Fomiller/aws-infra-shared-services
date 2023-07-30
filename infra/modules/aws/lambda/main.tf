@@ -73,7 +73,7 @@ resource "aws_iam_policy" "lambda_role_policy" {
         "Sid" : "KmsDecrypt",
         "Effect" : "Allow",
         "Action" : "kms:Decrypt",
-        "Resource" : [aws_kms_key.chat_stat_master_kms_key.arn]
+        "Resource" : [data.aws_kms_key.chat_stat_master_kms_key.arn]
       }
     ]
   })
