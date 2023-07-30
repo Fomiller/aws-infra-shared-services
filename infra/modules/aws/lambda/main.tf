@@ -55,6 +55,25 @@ resource "aws_iam_policy" "lambda_role_policy" {
         "Effect" : "Allow",
         "Action" : "s3:*Object",
         "Resource" : ["arn:aws:s3:::fomiller-dev/*"]
+      },
+      {
+        "Sid" : "GetGmailSecret",
+        "Effect" : "Allow",
+        "Action" : "secretsmanager:GetSecretValue",
+        "Resource" : [aws_secretsmanager_secret.gmail_congocoon_pass.arn]
+      },
+      {
+        "Sid" : "ListDescribeSecret",
+        "Effect" : "Allow",
+        "Action" : "secretsmanager:DescribeSecret",
+        "Action" : "secretsmanager:List*",
+        "Resource" : ["*"]
+      },
+      {
+        "Sid" : "KmsDecrypt",
+        "Effect" : "Allow",
+        "Action" : "kms:Decrypt",
+        "Resource" : [aws_kms_key.chat_stat_master_kms_key.arn]
       }
     ]
   })
@@ -97,7 +116,7 @@ resource "aws_secretsmanager_secret" "gmail_congocoon_pass" {
 }
 
 resource "aws_secretsmanager_secret_version" "gmail_congocoon_pass" {
-  secret_id = aws_secretsmanager_secret.gmail_congocoon_pass.id
+  secret_id     = aws_secretsmanager_secret.gmail_congocoon_pass.id
   secret_string = var.gmail_congocoon_pass
 }
 
