@@ -1,6 +1,6 @@
 data "archive_file" "zip" {
   type        = "zip"
-  source_file = "${path.module}/src/bin/lambda-go"
+  source_file = "${path.module}/src/bin/lambda_hello"
   output_path = "${path.module}/lambda_function.zip"
 }
 

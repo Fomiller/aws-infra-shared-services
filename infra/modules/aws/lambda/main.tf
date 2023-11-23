@@ -2,9 +2,10 @@ resource "aws_lambda_function" "lambda" {
   function_name    = "fomiller-congocoon-scraper"
   role             = aws_iam_role.lambda_role.arn
   filename         = "${path.module}/lambda_function.zip"
-  handler          = "lambda-go"
+  handler          = "lambda_congocoon"
   source_code_hash = data.archive_file.zip.output_base64sha256
-  runtime          = "go1.x"
+  runtime          = "provided.al2"
+  architectures    = ["arm64"]
   memory_size      = 128
   timeout          = 10
 
@@ -60,7 +61,7 @@ resource "aws_iam_policy" "lambda_role_policy" {
         "Sid" : "GetGmailSecret",
         "Effect" : "Allow",
         "Action" : "secretsmanager:GetSecretValue",
-        "Resource" : [aws_secretsmanager_secret.gmail_congocoon_pass.arn]
+        "Resource" : [aws_secretsmanager_secret.gmail_api_key.arn]
       },
       {
         "Sid" : "ListDescribeSecret",
@@ -110,13 +111,13 @@ resource "aws_lambda_permission" "lambda_permission" {
 
 }
 
-resource "aws_secretsmanager_secret" "gmail_congocoon_pass" {
-  name       = "gmail-congocoon-pass"
+resource "aws_secretsmanager_secret" "gmail_api_key" {
+  name       = "gmail-api-key"
   kms_key_id = data.aws_kms_key.chat_stat_master_kms_key.arn
 }
 
-resource "aws_secretsmanager_secret_version" "gmail_congocoon_pass" {
-  secret_id     = aws_secretsmanager_secret.gmail_congocoon_pass.id
-  secret_string = var.gmail_congocoon_pass
+resource "aws_secretsmanager_secret_version" "gmail_api_key" {
+  secret_id     = aws_secretsmanager_secret.gmail_api_key.id
+  secret_string = var.gmail_api_key
 }
 
