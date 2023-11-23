@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "bucket" {
-  bucket = "fomiller-dev"
+  bucket = "${var.namespace}-dev"
 
   object_lock_enabled = false
   tags = {

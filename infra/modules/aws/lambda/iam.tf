@@ -36,13 +36,13 @@ resource "aws_iam_policy" "lambda_role_policy" {
         "Sid" : "ListObjectsInBucket",
         "Effect" : "Allow",
         "Action" : ["s3:ListBucket"],
-        "Resource" : ["arn:aws:s3:::fomiller-dev"]
+        "Resource" : ["arn:aws:s3:::${var.namespace}-dev"]
       },
       {
         "Sid" : "AllObjectActions",
         "Effect" : "Allow",
         "Action" : "s3:*Object",
-        "Resource" : ["arn:aws:s3:::fomiller-dev/*"]
+        "Resource" : ["arn:aws:s3:::${var.namespace}-dev/*"]
       },
       {
         "Sid" : "GetGmailSecret",

@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "lambda" {
-  function_name    = "fomiller-congocoon-scraper"
+  function_name    = "${var.namespace}-congocoon-scraper"
   role             = aws_iam_role.lambda_role.arn
   filename         = "${path.module}/lambda_function.zip"
   handler          = "lambda_congocoon"
