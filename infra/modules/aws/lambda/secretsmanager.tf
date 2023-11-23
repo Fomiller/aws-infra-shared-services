@@ -1,5 +1,5 @@
 resource "aws_secretsmanager_secret" "gmail_api_key" {
-  name       = "gmail-api-key"
+  name       = "${var.namespace}-gmail-api-key"
   kms_key_id = data.aws_kms_key.chat_stat_master_kms_key.arn
 }
 
