@@ -28,7 +28,7 @@ jobs:
     with:
       lambda_src: infra/modules/aws/lambda/src/main.go
       lambda_output:  infra/modules/aws/lambda/src/bin/lambda_congocoon
-      artifacts_dir: infra/modules/aws/lambda/bin
+      artifacts_dir: infra/modules/aws/lambda/src/bin
             
   Deploy-infra:
     name: 'Deploy Infra'
