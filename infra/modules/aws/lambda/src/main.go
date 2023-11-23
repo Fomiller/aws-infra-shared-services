@@ -163,7 +163,7 @@ func containsFile(s []*s3.Object, str string) bool {
 func sendEmail() {
 	// from is senders email address
 
-	secret := aws.String("gmail-congocoon-pass")
+	secret := aws.String("gmail-api-key")
 	sess := session.Must(session.NewSession())
 	sm := secretsmanager.New(sess, aws.NewConfig().WithRegion("us-east-1"))
 	// we used environment variables to load the

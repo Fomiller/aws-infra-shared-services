@@ -1,5 +1,5 @@
-variable "gmail_congocoon_pass" {
+variable "gmail_api_key" {
   type    = string
-  default = "user1234"
+  default = "abc1234"
 }
 

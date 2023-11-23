@@ -1,0 +1,43 @@
+name: 'Terragrunt Deploy'
+  
+on:
+  push:
+    paths:
+      - '.github/**'
+      - 'modules/**'
+      - 'infra/**'
+      - 'justfile'
+   
+jobs:
+  Pre-check:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          cancel_others: 'true'
+          concurrent_skipping: 'same_content_newer'
+            
+  Build-Lambdas-Congocoon:
+    name: 'Build Congocoon Lambda'
+    needs: Pre-check
+    uses: fomiller/gh-actions/.github/workflows/go-lambda.yaml@main
+    with:
+      lambda_src: infra/modules/aws/lambda/src/main.go
+      lambda_output:  infra/modules/aws/lambda/src/bin/lambda_congocoon
+      artifacts_dir: infra/modules/aws/lambda/src/bin
+            
+  Deploy-infra:
+    name: 'Deploy Infra'
+    needs: ["Build-Lambdas-Congocoon"]
+    uses: fomiller/gh-actions/.github/workflows/terragrunt.yaml@main
+    with:
+      environment: ${{ contains(fromJSON('["refs/heads/main", "refs/heads/master"]'), github.ref) && 'prod' || 'dev' }}
+      infra-dir: infra/modules/aws
+      doppler-project: aws-infrastructure
+      download-artifacts: true
+      artifacts_dir: infra/modules/aws/lambda/src/bin
+    secrets: inherit
