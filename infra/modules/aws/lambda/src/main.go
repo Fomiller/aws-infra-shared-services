@@ -163,7 +163,7 @@ func containsFile(s []*s3.Object, str string) bool {
 func sendEmail() {
 	// from is senders email address
 
-	secret := "gmail-congocoon-pass"
+	secret := aws.String("gmail-congocoon-pass")
 	sess := session.Must(session.NewSession())
 	sm := secretsmanager.New(sess, aws.NewConfig().WithRegion("us-east-1"))
 	// we used environment variables to load the
@@ -171,7 +171,7 @@ func sendEmail() {
 	// you can also directly assign the email address
 	// and the password
 	from := "forrestmillerj@gmail.com"
-	password, err := sm.GetSecretValue(&secretsmanager.GetSecretValueInput{SecretId: &secret})
+	password, err := sm.GetSecretValue(&secretsmanager.GetSecretValueInput{SecretId: secret})
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -210,7 +210,7 @@ func sendEmail() {
 	// authenticate to host and act as identity.
 	// Usually identity should be the empty string,
 	// to act as username.
-	auth := smtp.PlainAuth("", from, password.String(), host)
+	auth := smtp.PlainAuth("", from, *password.SecretString, host)
 
 	// SendMail uses TLS connection to send the mail
 	// The email is sent to all address in the toList,
