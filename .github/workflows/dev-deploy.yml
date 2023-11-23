@@ -39,4 +39,5 @@ jobs:
       infra-dir: infra/modules/aws
       doppler-project: aws-infrastructure
       download-artifacts: true
+      artifacts_dir: infra/modules/aws/lambda/src/bin
     secrets: inherit
