@@ -40,4 +40,3 @@ jobs:
       doppler-project: aws-infrastructure
       download-artifacts: true
     secrets: inherit
-    
