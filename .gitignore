@@ -17,6 +17,7 @@
 #terraform
 *.terraform
 */**/.terragrunt-cache/
+**/*.gen.tf
 
 #env files
 env.list

@@ -67,9 +67,9 @@ jobs:
     needs: Pre-check
     uses: fomiller/gh-actions/.github/workflows/go-lambda.yaml@main
     with:
-      lambda_src: lambda/src/main.go
-      lambda_output:  lambda/src/bin/lambda_congocoon
-      infra-dir: infra/modules/aws
+      lambda_src: infra/modules/aws/lambda/src/main.go
+      lambda_output:  infra/modules/aws/lambda/src/bin/lambda_congocoon
+      artifacts_dir: infra/modules/aws/lambda/bin
             
   Deploy-infra:
     name: 'Deploy Infra'
