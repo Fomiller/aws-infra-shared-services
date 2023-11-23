@@ -1,4 +1,43 @@
 # .github/workflows/dev-deploy.yml
+#
+# name: 'Terragrunt Deploy'
+#   
+# on:
+#   push:
+#     paths:
+#       - '.github/**'
+#       - 'modules/**'
+#       - 'infra/**'
+#     branches:
+#       - '*'
+#       - 'feature/*'
+#       - '!main'
+#       - '!master'
+#         
+# # env:
+# #   AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+# #   AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+# #   AWS_ACCOUNT_ID: ${{ secrets.DEV_AWS_ACCOUNT }}
+# #   AWS_DEPLOYER_ROLE: ${{ secrets.AWS_DEPLOYER_ROLE }}
+# #   AWS_DEFAULT_REGION: us-east-1
+# #   AWS_DEFAULT_OUTPUT: json
+# #   TG_VERSION: v0.42.8
+# #   TF_VERSION: latest
+# #   INFRA_DIR: infra/us-east-1/dev
+#
+#     
+# jobs:
+#   deploy-infra:
+#     uses: fomiller-org/gh-actions/.github/workflows/terragrunt.yaml@main
+#     with:
+#       environment: dev
+#     secrets: 
+#       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#       aws-secret-access-KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#       aws-account-id: ${{ secrets.AWS_ACCOUNT_ID }}
+#       aws-deployer-role: ${{ secrets.AWS_DEPLOYER_ROLE }}
+#       gmail_pass: ${{ secrets.GMAIL_CONGOCOON_PASSWORD }}
+# .github/workflows/deploy.yml
 
 name: 'Terragrunt Deploy'
   
@@ -8,33 +47,38 @@ on:
       - '.github/**'
       - 'modules/**'
       - 'infra/**'
-    branches:
-      - '*'
-      - 'feature/*'
-      - '!main'
-      - '!master'
-        
-# env:
-#   AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
-#   AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
-#   AWS_ACCOUNT_ID: ${{ secrets.DEV_AWS_ACCOUNT }}
-#   AWS_DEPLOYER_ROLE: ${{ secrets.AWS_DEPLOYER_ROLE }}
-#   AWS_DEFAULT_REGION: us-east-1
-#   AWS_DEFAULT_OUTPUT: json
-#   TG_VERSION: v0.42.8
-#   TF_VERSION: latest
-#   INFRA_DIR: infra/us-east-1/dev
-
-    
+      - 'justfile'
+   
 jobs:
-  deploy-infra:
-    uses: fomiller-org/gh-actions/.github/workflows/terragrunt.yaml@main
+  Pre-check:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          cancel_others: 'true'
+          concurrent_skipping: 'same_content_newer'
+            
+  Build-Lambdas-Congocoon:
+    name: 'Build Congocoon Lambda'
+    needs: Pre-check
+    uses: fomiller/gh-actions/.github/workflows/go-lambda.yaml@main
     with:
-      environment: dev
-    secrets: 
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws-secret-access-KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      aws-account-id: ${{ secrets.AWS_ACCOUNT_ID }}
-      aws-deployer-role: ${{ secrets.AWS_DEPLOYER_ROLE }}
-      gmail_pass: ${{ secrets.GMAIL_CONGOCOON_PASSWORD }}
-        
+      lambda_src: lambda/src/main.go
+      lambda_output:  lambda/src/bin/lambda_congocoon
+      infra-dir: infra/modules/aws
+            
+  Deploy-infra:
+    name: 'Deploy Infra'
+    needs: ["Build-Lambdas-Congocoon"]
+    uses: fomiller/gh-actions/.github/workflows/terragrunt.yaml@main
+    with:
+      environment: ${{ contains(fromJSON('["refs/heads/main", "refs/heads/master"]'), github.ref) && 'prod' || 'dev' }}
+      infra-dir: infra/modules/aws
+      doppler-project: aws-infrastructure
+      download-artifacts: true
+    secrets: inherit
+    
