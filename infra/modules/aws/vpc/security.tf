@@ -1,6 +1,6 @@
-resource "aws_security_group" "chat_stat_lb" {
-  name   = "${var.namespace}-${var.app_prefix}-alb-security-group"
-  vpc_id = aws_vpc.chat_stat_main.id
+resource "aws_security_group" "aws_infra_lb" {
+  name   = "${var.namespace}-alb-security-group"
+  vpc_id = aws_vpc.aws_infra.id
 
   ingress {
     protocol    = "tcp"
@@ -17,24 +17,23 @@ resource "aws_security_group" "chat_stat_lb" {
   }
 }
 
-
-resource "aws_security_group" "chat_stat_ecs_task" {
-  name   = "${var.namespace}-${var.app_prefix}-task-security-group"
-  vpc_id = aws_vpc.chat_stat_main.id
-
-  # only allow inbound traffic from port 3000 to port 3000
-  ingress {
-    protocol        = "tcp"
-    from_port       = 3000
-    to_port         = 3000
-    security_groups = [aws_security_group.chat_stat_lb.id]
-  }
-
-  # allow all outbound traffic
-  egress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
+# resource "aws_security_group" "aws_infra_ecs_task" {
+#   name   = "${var.namespace}-task-security-group"
+#   vpc_id = aws_vpc.aws_infra.id
+#
+#   # only allow inbound traffic from port 3000 to port 3000
+#   ingress {
+#     protocol        = "tcp"
+#     from_port       = 3000
+#     to_port         = 3000
+#     security_groups = [aws_security_group.aws_infra_lb.id]
+#   }
+#
+#   # allow all outbound traffic
+#   egress {
+#     protocol    = "-1"
+#     from_port   = 0
+#     to_port     = 0
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+# }

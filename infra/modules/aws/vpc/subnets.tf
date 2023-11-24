@@ -1,6 +1,6 @@
 resource "aws_subnet" "public_subnets" {
   count             = length(var.public_subnet_cidrs)
-  vpc_id            = aws_vpc.chat_stat_main.id
+  vpc_id            = aws_vpc.aws_infra.id
   cidr_block        = element(var.public_subnet_cidrs, count.index)
   availability_zone = element(var.azs, count.index)
   tags = {
@@ -11,7 +11,7 @@ resource "aws_subnet" "public_subnets" {
 
 resource "aws_subnet" "private_subnets" {
   count             = length(var.private_subnet_cidrs)
-  vpc_id            = aws_vpc.chat_stat_main.id
+  vpc_id            = aws_vpc.aws_infra.id
   cidr_block        = element(var.private_subnet_cidrs, count.index)
   availability_zone = element(var.azs, count.index)
   tags = {
@@ -20,21 +20,21 @@ resource "aws_subnet" "private_subnets" {
   }
 }
 
-resource "aws_route_table" "chat_stat_rt" {
-  vpc_id = aws_vpc.chat_stat_main.id
+resource "aws_route_table" "aws_infra" {
+  vpc_id = aws_vpc.aws_infra.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.chat_stat.id
+    gateway_id = aws_internet_gateway.aws_infra.id
   }
 
   tags = {
-    Name = "Chat Stat route table"
+    Name = "Fomiller route table"
   }
 }
 
-resource "aws_route_table_association" "chat_stat" {
+resource "aws_route_table_association" "aws_infra" {
   count          = length(var.public_subnet_cidrs)
   subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
-  route_table_id = aws_route_table.chat_stat_rt.id
+  route_table_id = aws_route_table.aws_infra.id
 }
