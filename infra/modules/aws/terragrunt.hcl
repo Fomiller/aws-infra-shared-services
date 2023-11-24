@@ -1,5 +1,6 @@
 locals {
     namespace = "fomiller"
+    app_prefix = "aws-infra"
     project_name = "aws-infrastructure"
 }
 
@@ -13,6 +14,7 @@ provider "aws" {
     tags = {
       email = "forrestmillerj@gmail.com"
       managedWith = "terraform"
+      repo = "${local.project_name}"
     }
   }
 }
@@ -45,7 +47,7 @@ variable "environment" {
 
 variable "app_prefix" {
     type = string
-    default = "aws-infra"
+    default = "${local.app_prefix}"
 }
 
 variable "namespace" {

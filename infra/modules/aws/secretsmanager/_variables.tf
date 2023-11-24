@@ -3,3 +3,10 @@ variable "gmail_api_key" {
   default = "abc1234"
 }
 
+variable "terraform_deployer_pass" {
+  type = string
+}
+
+variable "terraform_deployer_user" {
+  type = string
+}
