@@ -7,11 +7,11 @@ output "target_group" {
 }
 
 output "private_subnets" {
-  value = aws_subnet.private_subnets[*].id
+  value = aws_subnet.private[*].id
 }
 
 output "public_subnets" {
-  value = aws_subnet.public_subnets[*].id
+  value = aws_subnet.public[*].id
 }
 
 # output "security_group_ecs_task" {

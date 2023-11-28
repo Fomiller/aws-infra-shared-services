@@ -1,6 +1,6 @@
 resource "aws_lb" "aws_infra" {
   name            = "${var.namespace}-lb"
-  subnets         = aws_subnet.public_subnets[*].id
+  subnets         = aws_subnet.public[*].id
   security_groups = [aws_security_group.aws_infra_lb.id]
 }
 

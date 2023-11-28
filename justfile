@@ -40,6 +40,12 @@ plan-all:
     --name-transformer tf-var  \
     -- terragrunt run-all \
     plan --terragrunt-working-dir {{infraDir}}
+
+state-list dir:
+    doppler run \
+    --name-transformer tf-var  \
+    -- terragrunt state list \
+    --terragrunt-working-dir {{infraDir}}/{{dir}}
     
 apply dir:
     doppler run \

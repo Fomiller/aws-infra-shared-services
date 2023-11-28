@@ -1,4 +1,4 @@
-resource "aws_subnet" "public_subnets" {
+resource "aws_subnet" "public" {
   count             = length(var.public_subnet_cidrs)
   vpc_id            = aws_vpc.aws_infra.id
   cidr_block        = element(var.public_subnet_cidrs, count.index)
@@ -9,7 +9,7 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 
-resource "aws_subnet" "private_subnets" {
+resource "aws_subnet" "private" {
   count             = length(var.private_subnet_cidrs)
   vpc_id            = aws_vpc.aws_infra.id
   cidr_block        = element(var.private_subnet_cidrs, count.index)
@@ -20,21 +20,15 @@ resource "aws_subnet" "private_subnets" {
   }
 }
 
-resource "aws_route_table" "aws_infra" {
+resource "aws_route_table" "private" {
   vpc_id = aws_vpc.aws_infra.id
 
   route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.aws_infra.id
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.aws_infra.id
   }
 
   tags = {
-    Name = "Fomiller route table"
+    Name = "${title(var.namespace)} private route table"
   }
-}
-
-resource "aws_route_table_association" "aws_infra" {
-  count          = length(var.public_subnet_cidrs)
-  subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
-  route_table_id = aws_route_table.aws_infra.id
 }
