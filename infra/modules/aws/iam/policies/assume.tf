@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "lambda_assume_policy" {
+data "aws_iam_policy_document" "lambda" {
   statement {
     sid     = "LambdaAssumePolicy"
     effect  = "Allow"
@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "lambda_assume_policy" {
   }
 }
 
-data "aws_iam_policy_document" "eventbridge_assume_policy" {
+data "aws_iam_policy_document" "eventbridge" {
   statement {
     sid     = "EventBridgeAssumePolicy"
     effect  = "Allow"

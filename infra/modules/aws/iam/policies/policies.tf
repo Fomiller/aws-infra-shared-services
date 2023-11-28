@@ -1,4 +1,4 @@
-resource "aws_iam_policy" "hello_world_lambda_role_policy" {
+resource "aws_iam_policy" "lambda_hello" {
   name        = "LambdaHelloWorldPermission"
   description = "IAM Policy for LambdaHelloWorld"
   policy = jsonencode({
@@ -29,7 +29,7 @@ resource "aws_iam_policy" "hello_world_lambda_role_policy" {
   })
 }
 
-resource "aws_iam_policy" "ecs_events_run_task_with_any_role" {
+resource "aws_iam_policy" "ecs_events" {
   name        = "EcsRunTaskPermission"
   description = "Policy for Running chat stat ECS tasks "
 
