@@ -1,2 +1,4 @@
-locals {}
+locals {
+  namespace = title(var.namespace)
+}
 // comment

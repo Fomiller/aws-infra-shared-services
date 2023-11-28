@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "lambda_hello" {
-  name        = "LambdaHelloWorldPermission"
+  name        = "${local.namespace}LambdaHelloWorldPermission"
   description = "IAM Policy for LambdaHelloWorld"
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -30,7 +30,7 @@ resource "aws_iam_policy" "lambda_hello" {
 }
 
 resource "aws_iam_policy" "ecs_events" {
-  name        = "EcsRunTaskPermission"
+  name        = "${local.namespace}EcsRunTaskPermission"
   description = "Policy for Running chat stat ECS tasks "
 
   policy = <<DOC
