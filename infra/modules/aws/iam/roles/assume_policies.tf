@@ -22,17 +22,14 @@ data "aws_iam_policy_document" "eventbridge" {
   }
 }
 
-# data "aws_iam_policy_document" "aws_terraform_assume_policy" {
-#   statement {
-#     sid    = "STSassumeRole"
-#     effect = "Allow"
-#     actions = [
-#       "sts:AssumeRole",
-#       "sts:TagSession"
-#     ]
-#     principals {
-#       type        = "AWS"
-#       identifiers = [data.aws_iam_user.aws_terraform.arn]
-#     }
-#   }
-# }
+data "aws_iam_policy_document" "eks" {
+  statement {
+    sid     = "EKSAssumePolicy"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["eks.amazonaws.com"]
+    }
+  }
+}
