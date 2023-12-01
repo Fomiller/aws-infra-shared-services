@@ -6,11 +6,11 @@ output "target_group" {
   value = aws_lb_target_group.aws_infra.id
 }
 
-output "private_subnets" {
+output "subnet_ids_private" {
   value = aws_subnet.private[*].id
 }
 
-output "public_subnets" {
+output "subnet_ids_public" {
   value = aws_subnet.public[*].id
 }
 

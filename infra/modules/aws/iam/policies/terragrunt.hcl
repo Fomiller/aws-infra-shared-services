@@ -9,7 +9,7 @@ dependency "roles" {
     mock_outputs = {
         iam_role_name_lambda_hello = "FomillerLambdaHello"
         iam_role_name_eks_cluster = "FomilerEksCluster"
-        # iam_role_name_ecs_events = "FomillerEcsEvents"
+        iam_role_name_ecs_fargate_profile = "FomillerEksFargateProfile"
     }
 }
 

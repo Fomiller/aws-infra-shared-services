@@ -33,3 +33,15 @@ data "aws_iam_policy_document" "eks" {
     }
   }
 }
+
+data "aws_iam_policy_document" "eks_fargate_profile" {
+  statement {
+    sid     = "EKSFargateProfileAssumePolicy"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["eks-fargate-pods.amazonaws.com"]
+    }
+  }
+}
