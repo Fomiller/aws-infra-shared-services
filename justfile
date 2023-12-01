@@ -5,6 +5,12 @@ infraDir := "infra/modules/aws"
 login env:
     assume-role login -p {{env}}Terraform
 
+output-module-groups:
+    doppler run \
+    --name-transformer tf-var  \
+    -- terragrunt output-module-groups \
+    --terragrunt-working-dir {{infraDir}}
+    
 init dir:
     doppler run \
     --name-transformer tf-var  \
