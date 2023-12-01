@@ -16,4 +16,5 @@ dependency "roles" {
 inputs = {
     iam_role_name_lambda_hello = dependency.roles.outputs.iam_role_name_lambda_hello
     iam_role_name_eks_cluster = dependency.roles.outputs.iam_role_name_eks_cluster
+    iam_role_name_eks_fargate_profile = dependency.roles.outputs.iam_role_name_eks_fargate_profile
 }
