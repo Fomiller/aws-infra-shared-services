@@ -1,8 +1,7 @@
-set export 
-
 infraDir := "infra/modules/aws"
+env := 'dev'
 
-login env:
+login env=env:
     assume-role login -p {{env}}Terraform
 
 output-module-groups:
