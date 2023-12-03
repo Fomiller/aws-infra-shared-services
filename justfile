@@ -1,6 +1,11 @@
 infraDir := "infra/modules/aws"
 env := 'dev'
 
+clean:
+    rm -rf {{infraDir}}/**/_.*.gen.tf
+    rm -rf {{infraDir}}/**/.terraform.lock.hcl
+    rm -rf {{infraDir}}/**/.terraform
+    
 login env=env:
     assume-role login -p {{env}}Terraform
 
@@ -84,3 +89,5 @@ fmt:
     -- terraform fmt \
     --recursive
 
+update-kubeconfig:
+    doppler run -- aws eks update-kubeconfig --name fomiller-cluster
