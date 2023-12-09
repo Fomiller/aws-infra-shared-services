@@ -17,7 +17,7 @@ resource "aws_route53_record" "fomillercloud_subdomain_public_ns" {
   records = aws_route53_zone.fomillercloud_subdomain_public.name_servers
 }
 
-resource "aws_route53_record" "fomillercloud_subdomain_public_ns" {
+resource "aws_route53_record" "fomiller_subdomain_public_ns" {
   provider        = aws.org
   allow_overwrite = true
   name            = "${var.environment}.aws"
