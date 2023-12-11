@@ -3,7 +3,7 @@ resource "aws_route53_zone" "fomillercloud_subdomain_public" {
 }
 
 resource "aws_route53_zone" "fomiller_subdomain_public" {
-  name = "${var.environment}.aws.fomillercloud.com"
+  name = "${var.environment}.aws.fomiller.com"
 }
 
 resource "aws_route53_record" "fomillercloud_subdomain_public_ns" {
