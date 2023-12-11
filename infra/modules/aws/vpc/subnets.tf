@@ -4,8 +4,9 @@ resource "aws_subnet" "public" {
   cidr_block        = element(var.public_subnet_cidrs, count.index)
   availability_zone = element(var.azs, count.index)
   tags = {
-    Name = "Public Subnet ${count.index + 1}"
-    Tier = "Public"
+    Name                                     = "public-${element(var.azs, count.index)}"
+    "kubernetes.io/role/elb"                 = "1"
+    "kubernetes.io/cluster/fomiller-cluster" = "owned"
   }
 }
 
@@ -15,8 +16,9 @@ resource "aws_subnet" "private" {
   cidr_block        = element(var.private_subnet_cidrs, count.index)
   availability_zone = element(var.azs, count.index)
   tags = {
-    Name = "Private Subnet ${count.index + 1}"
-    Tier = "Private"
+    Name                                     = "private-${element(var.azs, count.index)}"
+    "kubernetes.io/role/internal-elb"        = "1"
+    "kubernetes.io/cluster/fomiller-cluster" = "owned"
   }
 }
 

@@ -14,6 +14,13 @@ output-module-groups:
     --name-transformer tf-var  \
     -- terragrunt output-module-groups \
     --terragrunt-working-dir {{infraDir}}
+
+import dir tf_resource aws_resource:
+    doppler run \
+    --name-transformer tf-var  \
+    -- terragrunt import \
+    {{tf_resource}} {{aws_resource}} \
+    --terragrunt-working-dir {{infraDir}}/{{dir}}
     
 init dir:
     doppler run \

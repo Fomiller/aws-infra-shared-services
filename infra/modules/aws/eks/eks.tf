@@ -31,7 +31,6 @@ resource "aws_eks_fargate_profile" "fomiller" {
   pod_execution_role_arn = var.iam_role_arn_eks_fargate_profile
 
   subnet_ids = var.subnet_ids_private
-
   selector {
     namespace = var.namespace
   }
