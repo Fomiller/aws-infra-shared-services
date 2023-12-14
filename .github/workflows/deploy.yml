@@ -21,16 +21,16 @@ jobs:
           cancel_others: 'true'
           concurrent_skipping: 'same_content_newer'
             
-  # Deploy-infra:
-  #   name: 'Deploy Infra'
-  #   needs: Pre-check
-  #   uses: fomiller/gh-actions/.github/workflows/terragrunt.yaml@main
-  #   with:
-  #     environment: ${{ contains(fromJSON('["refs/heads/main", "refs/heads/master"]'), github.ref) && 'prod' || 'dev' }}
-  #     infra-dir: infra/modules/aws
-  #     doppler-project: aws-infrastructure
-  #   secrets: inherit
+  Deploy-infra:
+    name: 'Deploy Infra'
+    needs: Pre-check
+    uses: fomiller/gh-actions/.github/workflows/terragrunt.yaml@main
+    with:
+      environment: ${{ contains(fromJSON('["refs/heads/main", "refs/heads/master"]'), github.ref) && 'prod' || 'dev' }}
+      infra-dir: infra/modules/aws
+      doppler-project: aws-infrastructure
+    secrets: inherit
 
-  Deploy-mdbook:
+  Github-Pages:
     needs: Pre-check
     uses: fomiller/gh-actions/.github/workflows/mdbook.yaml@main
