@@ -27,3 +27,6 @@ env.list
 
 **/bin/
 **/*.zip
+
+# mdbook
+docs/book

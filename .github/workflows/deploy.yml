@@ -30,3 +30,7 @@ jobs:
       infra-dir: infra/modules/aws
       doppler-project: aws-infrastructure
     secrets: inherit
+
+  Github-Pages:
+    needs: Pre-check
+    uses: fomiller/gh-actions/.github/workflows/mdbook.yaml@main
