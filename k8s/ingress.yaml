@@ -8,13 +8,13 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:695434033664:certificate/6b2831b8-3fcc-4b4b-81e8-e7325dfbca84
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:695434033664:certificate/237b69ce-6f47-4fe0-942a-abb25f4dd99c
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
 spec:
   ingressClassName: alb
   rules:
-    - host: php-apache.devopsbyexample.io
+    - host: k8s.dev.aws.fomilercloud.com
       http:
         paths:
           - path: /
