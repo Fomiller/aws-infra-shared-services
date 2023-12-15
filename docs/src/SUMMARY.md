@@ -1,3 +1,5 @@
-# Summary
+# AWS Infrastructure Documentation
 
-- [Chapter 1](./chapter_1.md)
+- [Logging](./logging.md)
+- [Authentication](./auth.md)
+- [EKS](./eks.md)
