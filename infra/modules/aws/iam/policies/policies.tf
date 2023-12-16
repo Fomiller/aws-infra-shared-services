@@ -52,3 +52,22 @@ resource "aws_iam_policy" "ecs_events" {
 DOC
 }
 
+resource "aws_iam_policy" "eks_logging" {
+  name        = "${local.namespace}FargateLoggingPolicy"
+  description = "IAM Policy for EKS Fargate Logging"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [{
+      "Effect" : "Allow",
+      "Action" : [
+        "logs:CreateLogStream",
+        "logs:CreateLogGroup",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents",
+        "logs:PutRetentionPolicy"
+      ],
+      "Resource" : "*"
+    }]
+    }
+  )
+}

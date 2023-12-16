@@ -1,7 +1,7 @@
 # skip = true
 
 dependencies {
-    paths = ["../route53"]
+    paths = ["../route53", "../cloudwatch"]
 }
 
 dependency "roles" {

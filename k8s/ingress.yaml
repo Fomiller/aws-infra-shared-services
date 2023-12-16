@@ -3,8 +3,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: php-apache
-  namespace: fomiller
+  name: argocd
+  namespace: argocd
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
@@ -21,6 +21,6 @@ spec:
             pathType: Exact
             backend:
               service:
-                name: php-apache
+                name: argocd
                 port:
                   number: 80

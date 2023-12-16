@@ -1,0 +1,13 @@
+---
+global:
+  image:
+    tag: "v2.6.6"
+
+dex:
+  enabled: false
+
+server:
+  services:
+    type: LoadBalancer
+  # extraArgs:
+  #   - --insecure
