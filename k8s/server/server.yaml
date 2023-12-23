@@ -64,9 +64,9 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: 'fomiller-cluster.dev.aws.fomillercloud.com'
       
     # alb.ingress.kubernetes.io/rewrite-target: / # I dont think this works
-    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:695434033664:certificate/237b69ce-6f47-4fe0-942a-abb25f4dd99c
-    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    # alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:695434033664:certificate/237b69ce-6f47-4fe0-942a-abb25f4dd99c
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
       
 spec:
   ingressClassName: alb
