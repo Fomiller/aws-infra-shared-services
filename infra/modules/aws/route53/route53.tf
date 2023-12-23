@@ -35,7 +35,7 @@ resource "aws_route53_record" "fomillercloud_subdomain_public_ns" {
 resource "aws_route53_record" "fomillercloud_cluster_subdomain_public_ns" {
   provider        = aws.org
   allow_overwrite = true
-  name            = "${var.environment}.aws"
+  name            = "${var.namespace}-cluster.${var.environment}.aws"
   ttl             = 172800
   type            = "NS"
   zone_id         = data.aws_route53_zone.fomillercloud.zone_id
