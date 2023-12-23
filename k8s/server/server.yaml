@@ -61,20 +61,21 @@ metadata:
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
     alb.ingress.kubernetes.io/tags: 'managedWith=kubernetes'
     alb.ingress.kubernetes.io/group.name: 'fomiller'
-    external-dns.alpha.kubernetes.io/hostname: 'fomiller-cluster.dev.aws.fomillercloud.com'
+    external-dns.alpha.kubernetes.io/hostname: 'web-server.fomiller-cluster.dev.aws.fomillercloud.com'
       
     # alb.ingress.kubernetes.io/rewrite-target: / # I dont think this works
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:695434033664:certificate/237b69ce-6f47-4fe0-942a-abb25f4dd99c
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:695434033664:certificate/60e1b227-fe33-4e55-80c7-edb0dc4a6d07
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
       
 spec:
   ingressClassName: alb
   rules:
+    # - host: web-server.fomiller-cluster.dev.aws.fomillercloud.com
     - http:
         paths:
           - pathType: Prefix
-            path: /server
+            path: /
             backend:
               service:
                 name: web-server
