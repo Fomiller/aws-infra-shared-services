@@ -71,8 +71,8 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    # - host: web-server.fomiller-cluster.dev.aws.fomillercloud.com
-    - http:
+    - host: web-server.fomiller-cluster.dev.aws.fomillercloud.com
+      http:
         paths:
           - pathType: Prefix
             path: /
