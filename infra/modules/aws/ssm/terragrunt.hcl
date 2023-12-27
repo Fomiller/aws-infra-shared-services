@@ -13,5 +13,5 @@ dependency "elasticache" {
 
 
 inputs = {
-    elasticache_configuration_endpoint_redis = dependency.vpc.outputs.elasticache_configuration_endpoint_redis
+    elasticache_configuration_endpoint_redis = dependency.elastiache.outputs.elasticache_configuration_endpoint_redis
 }
