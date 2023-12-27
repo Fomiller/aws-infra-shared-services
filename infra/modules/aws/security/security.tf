@@ -19,16 +19,12 @@ resource "aws_security_group" "vpc_public_ingress" {
 }
 
 resource "aws_security_group" "eks" {
+  name   = "${var.namespace}-eks-sg"
   vpc_id = var.vpc_id
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
 
 resource "aws_security_group" "elasticache" {
+  name   = "${var.namespace}-elasticache-sg"
   vpc_id = var.vpc_id
 }
 
