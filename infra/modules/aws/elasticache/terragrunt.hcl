@@ -12,5 +12,5 @@ dependency "cloudwatch" {
 }
 
 inputs = {
-    cloudwatch_log_group_name_redis = dependency.route53.outputs.cloudwatch_log_group_name_redis
+    cloudwatch_log_group_name_redis = dependency.cloudwatch.outputs.cloudwatch_log_group_name_redis
 }
