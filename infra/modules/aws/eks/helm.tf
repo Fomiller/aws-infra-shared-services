@@ -92,6 +92,26 @@ resource "helm_release" "argocd" {
   values           = [file("values/argocd.yaml")]
 }
 
+resource "helm_release" "external_secrets" {
+  name       = "external-secrets"
+  repository = "https://charts.external-secrets.io"
+  chart      = "external-secrets"
+  namespace  = "kube-system"
+
+  set {
+    name  = "env.AWS_REGION"
+    value = "us-east-1"
+  }
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = aws_iam_role.external_secrets.arn
+  }
+  set {
+    name  = "webhook.port"
+    value = 9443
+  }
+}
+
 # resource "helm_release" "metrics-server" {
 #   name = "metrics-server"
 #
