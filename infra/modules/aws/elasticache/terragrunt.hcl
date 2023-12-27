@@ -24,5 +24,6 @@ dependency "vpc" {
 }
 
 inputs = {
+    cloudwatch_log_group_name_redis = dependency.cloudwatch.outputs.cloudwatch_log_group_name_redis
     subnet_ids_private = dependency.vpc.outputs.subnet_ids_private
 }
