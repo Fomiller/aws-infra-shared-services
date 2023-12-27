@@ -7,6 +7,9 @@ resource "aws_elasticache_cluster" "redis" {
   port              = 6379
   apply_immediately = true
   subnet_group_name = aws_elasticache_subnet_group.private.name
+  security_group_ids = [
+    var.security_group_id_elasticache
+  ]
 
   log_delivery_configuration {
     destination      = var.cloudwatch_log_group_name_redis

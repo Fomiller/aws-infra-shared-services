@@ -31,6 +31,15 @@ dependency "vpc" {
     }
 }
 
+dependency "security" {
+    config_path = "../security"
+    mock_outputs_merge_strategy_with_state = "shallow"
+    mock_outputs_allowed_terraform_commands = ["validate", "plan", "apply", "destroy"]
+    mock_outputs = {
+        security_group_id_eks = "${uuid()}"
+    }
+}
+
 include "root" {
   path = find_in_parent_folders()
 }
@@ -41,4 +50,5 @@ inputs = {
     subnet_ids_private = dependency.vpc.outputs.subnet_ids_private
     subnet_ids_public = dependency.vpc.outputs.subnet_ids_public
     vpc_id = dependency.vpc.outputs.vpc_id
+    security_group_id_eks = dependency.security.outputs.security_group_id_eks
 }

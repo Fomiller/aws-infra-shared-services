@@ -10,6 +10,9 @@ resource "aws_eks_cluster" "cluster" {
     public_access_cidrs     = ["0.0.0.0/0"]
 
     subnet_ids = concat(var.subnet_ids_private, var.subnet_ids_public)
+    security_group_ids = [
+      var.security_group_id_eks
+    ]
   }
 
 }
