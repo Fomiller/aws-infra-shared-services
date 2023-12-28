@@ -71,3 +71,9 @@ resource "aws_iam_policy" "eks_logging" {
     }
   )
 }
+
+resource "aws_iam_policy" "elasticache" {
+  name        = "${local.namespace}FargateElasticachePolicy"
+  description = "IAM Policy for EKS Fargate Elastiache"
+  policy      = data.aws_iam_policy_document.elasticache.json
+}

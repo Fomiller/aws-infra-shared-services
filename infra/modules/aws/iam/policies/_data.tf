@@ -8,3 +8,13 @@ data "aws_iam_policy" "admin_access" {
 data "aws_iam_user" "aws_terraform" {
   user_name = "AWSTerraform${upper(var.environment)}"
 }
+
+data "aws_iam_policy_document" "elasticache" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "elasticache:*"
+    ]
+    resources = ["*"]
+  }
+}
