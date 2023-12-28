@@ -6,7 +6,7 @@ resource "aws_elasticache_cluster" "redis" {
   num_cache_nodes   = 1
   port              = 6379
   apply_immediately = true
-  subnet_group_name = aws_elasticache_subnet_group.private.name
+  subnet_group_name = aws_elasticache_subnet_group.public.name
   security_group_ids = [
     var.security_group_id_elasticache
   ]
@@ -23,4 +23,9 @@ resource "aws_elasticache_cluster" "redis" {
 resource "aws_elasticache_subnet_group" "private" {
   name       = "${var.namespace}-private-subnet-group"
   subnet_ids = var.subnet_ids_private
+}
+
+resource "aws_elasticache_subnet_group" "public" {
+  name       = "${var.namespace}-public-subnet-group"
+  subnet_ids = var.subnet_ids_public
 }

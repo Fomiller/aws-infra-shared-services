@@ -20,6 +20,10 @@ dependency "vpc" {
             "MOCK-private-${uuid()}",
             "MOCK-private-${uuid()}",
         ]
+        subnet_ids_public = [
+            "MOCK-public-${uuid()}",
+            "MOCK-public-${uuid()}",
+        ]
     }
 }
 
@@ -35,5 +39,6 @@ dependency "security" {
 inputs = {
     cloudwatch_log_group_name_redis = dependency.cloudwatch.outputs.cloudwatch_log_group_name_redis
     subnet_ids_private = dependency.vpc.outputs.subnet_ids_private
+    subnet_ids_public = dependency.vpc.outputs.subnet_ids_public
     security_group_id_elasticache = dependency.security.outputs.security_group_id_elasticache
 }
