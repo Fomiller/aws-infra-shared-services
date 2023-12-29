@@ -34,6 +34,18 @@ data "aws_iam_policy_document" "eks" {
   }
 }
 
+data "aws_iam_policy_document" "eks_node_groups" {
+  statement {
+    sid     = "EKSNodeGroupsAssumePolicy"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
 data "aws_iam_policy_document" "eks_fargate_profile" {
   statement {
     sid     = "EKSFargateProfileAssumePolicy"

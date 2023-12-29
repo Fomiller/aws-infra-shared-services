@@ -10,6 +10,7 @@ dependency "roles" {
     mock_outputs_allowed_terraform_commands = ["validate", "plan", "apply", "destroy"]
     mock_outputs = {
         iam_role_arn_eks_cluster = "arn:aws:iam::${get_env("TF_VAR_account_id")}:role/FomillerEksCluster"
+        iam_role_arn_eks_node_groups = "arn:aws:iam::${get_env("TF_VAR_account_id")}:role/FomillerEksNodeGroups"
         iam_role_arn_eks_fargate_profile = "arn:aws:iam::${get_env("TF_VAR_account_id")}:role/FomillerEksFargateProfile"
     }
 }
@@ -46,6 +47,7 @@ include "root" {
 
 inputs = {
     iam_role_arn_eks_cluster = dependency.roles.outputs.iam_role_arn_eks_cluster
+    iam_role_arn_eks_node_groups = dependency.roles.outputs.iam_role_arn_eks_node_groups
     iam_role_arn_eks_fargate_profile = dependency.roles.outputs.iam_role_arn_eks_fargate_profile
     subnet_ids_private = dependency.vpc.outputs.subnet_ids_private
     subnet_ids_public = dependency.vpc.outputs.subnet_ids_public

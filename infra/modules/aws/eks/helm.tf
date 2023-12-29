@@ -36,7 +36,7 @@ resource "helm_release" "aws_load_balancer_controller" {
     value = var.vpc_id
   }
 
-  depends_on = [aws_eks_fargate_profile.kube_system]
+  # depends_on = [aws_eks_fargate_profile.kube_system]
 }
 
 resource "helm_release" "external_dns" {
@@ -79,7 +79,7 @@ resource "helm_release" "external_dns" {
   }
 
 
-  depends_on = [aws_eks_fargate_profile.kube_system]
+  # depends_on = [aws_eks_fargate_profile.kube_system]
 }
 
 resource "helm_release" "argocd" {

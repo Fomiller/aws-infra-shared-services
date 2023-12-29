@@ -8,6 +8,7 @@ data "aws_iam_policy_document" "external_secrets_assume_role_policy" {
       variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
       values = [
         "system:serviceaccount:kube-system:external-secrets",
+        "system:serviceaccount:chat-stat:external-secrets",
         "system:serviceaccount:${var.namespace}:external-secrets"
       ]
     }
