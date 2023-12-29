@@ -1,6 +1,10 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+data "aws_ssm_parameter" "eks_ami_release_version" {
+  name = "/aws/service/eks/optimized-ami/${aws_eks_cluster.cluster.version}/amazon-linux-2-arm64/recommended/release_version"
+}
+
 data "aws_eks_cluster_auth" "eks" {
   name = aws_eks_cluster.cluster.id
 }
