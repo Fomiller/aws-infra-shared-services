@@ -18,6 +18,8 @@ resource "aws_eks_node_group" "public_nodes" {
   cluster_name    = aws_eks_cluster.cluster.name
   node_group_name = "public-nodes"
   node_role_arn   = var.iam_role_arn_eks_node_groups
+
+  ami_type        = "AL2_ARM_64"
   release_version = nonsensitive(data.aws_ssm_parameter.eks_ami_release_version.value)
 
   subnet_ids = var.subnet_ids_public
