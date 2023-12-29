@@ -17,3 +17,11 @@ output "iam_role_arn_eks_fargate_profile" {
 output "iam_role_name_eks_fargate_profile" {
   value = aws_iam_role.eks_fargate_profile.name
 }
+
+output "iam_role_name_eks_node_groups" {
+  value = aws_iam_role.eks_node_groups.name
+}
+
+output "iam_role_arn_eks_node_groups" {
+  value = aws_iam_role.eks_node_groups.arn
+}
