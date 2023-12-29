@@ -37,3 +37,8 @@ resource "aws_iam_role_policy_attachment" "eks_node_groups_container_registry_po
   role       = var.iam_role_name_eks_node_groups
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
+
+resource "aws_iam_role_policy_attachment" "eks_node_elasticache_policy" {
+  role       = var.iam_role_name_eks_node_groups
+  policy_arn = "arn:aws:iam::aws:policy/AmazonElastiCacheReadOnlyAccess"
+}
