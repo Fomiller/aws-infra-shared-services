@@ -3,6 +3,9 @@ resource "aws_subnet" "public" {
   vpc_id            = aws_vpc.aws_infra.id
   cidr_block        = element(var.public_subnet_cidrs, count.index)
   availability_zone = element(var.azs, count.index)
+
+  map_public_ip_on_launch = true
+
   tags = {
     Name                                     = "public-${element(var.azs, count.index)}"
     "kubernetes.io/role/elb"                 = "1"
