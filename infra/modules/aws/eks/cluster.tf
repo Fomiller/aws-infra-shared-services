@@ -27,9 +27,12 @@ resource "aws_eks_node_group" "public_nodes" {
   capacity_type  = "ON_DEMAND"
   instance_types = ["t4g.small"]
 
+  # maximum pod limit per instance type
+  # https://gtsopour.medium.com/aws-eks-maximum-number-of-pods-per-ec2-node-instance-bfbe658cecad
+  # https://github.com/awslabs/amazon-eks-ami/blob/master/files/eni-max-pods.txt
   scaling_config {
-    desired_size = 1
-    max_size     = 2
+    desired_size = 2
+    max_size     = 3
     min_size     = 0
   }
 
