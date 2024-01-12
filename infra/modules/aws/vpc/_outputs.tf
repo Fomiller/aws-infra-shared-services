@@ -6,14 +6,14 @@ output "target_group" {
   value = aws_lb_target_group.aws_infra.id
 }
 
-output "private_subnets" {
-  value = aws_subnet.private_subnets[*].id
+output "subnet_ids_private" {
+  value = aws_subnet.private[*].id
 }
 
-output "public_subnets" {
-  value = aws_subnet.public_subnets[*].id
+output "subnet_ids_public" {
+  value = aws_subnet.public[*].id
 }
 
-# output "security_group_ecs_task" {
-#   value = aws_security_group.aws_infra_ecs_task.id
-# }
+output "vpc_id" {
+  value = aws_vpc.aws_infra.id
+}

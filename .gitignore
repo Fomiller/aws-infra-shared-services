@@ -18,6 +18,7 @@
 *.terraform
 */**/.terragrunt-cache/
 **/*.gen.tf
+**/.terraform.lock.hcl
 
 #env files
 env.list
@@ -26,3 +27,6 @@ env.list
 
 **/bin/
 **/*.zip
+
+# mdbook
+docs/book

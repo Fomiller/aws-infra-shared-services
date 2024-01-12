@@ -1,40 +1,26 @@
-resource "aws_subnet" "public_subnets" {
+resource "aws_subnet" "public" {
   count             = length(var.public_subnet_cidrs)
   vpc_id            = aws_vpc.aws_infra.id
   cidr_block        = element(var.public_subnet_cidrs, count.index)
   availability_zone = element(var.azs, count.index)
+
+  map_public_ip_on_launch = true
+
   tags = {
-    Name = "Public Subnet ${count.index + 1}"
-    Tier = "Public"
+    Name                                     = "public-${element(var.azs, count.index)}"
+    "kubernetes.io/role/elb"                 = "1"
+    "kubernetes.io/cluster/fomiller-cluster" = "owned"
   }
 }
 
-resource "aws_subnet" "private_subnets" {
+resource "aws_subnet" "private" {
   count             = length(var.private_subnet_cidrs)
   vpc_id            = aws_vpc.aws_infra.id
   cidr_block        = element(var.private_subnet_cidrs, count.index)
   availability_zone = element(var.azs, count.index)
   tags = {
-    Name = "Private Subnet ${count.index + 1}"
-    Tier = "Private"
+    Name                                     = "private-${element(var.azs, count.index)}"
+    "kubernetes.io/role/internal-elb"        = "1"
+    "kubernetes.io/cluster/fomiller-cluster" = "owned"
   }
-}
-
-resource "aws_route_table" "aws_infra" {
-  vpc_id = aws_vpc.aws_infra.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.aws_infra.id
-  }
-
-  tags = {
-    Name = "Fomiller route table"
-  }
-}
-
-resource "aws_route_table_association" "aws_infra" {
-  count          = length(var.public_subnet_cidrs)
-  subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
-  route_table_id = aws_route_table.aws_infra.id
 }

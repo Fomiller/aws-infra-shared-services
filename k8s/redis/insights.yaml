@@ -1,0 +1,143 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: redisinsight-ingress
+  namespace: fomiller
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-2016-08
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS
+    alb.ingress.kubernetes.io/healthcheck-path: /login
+    alb.ingress.kubernetes.io/target-type: 'ip'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+      
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:695434033664:certificate/60e1b227-fe33-4e55-80c7-edb0dc4a6d07
+    alb.ingress.kubernetes.io/tags: 'managedWith=kubernetes'
+    alb.ingress.kubernetes.io/group.name: 'fomiller'
+      
+    external-dns.alpha.kubernetes.io/hostname: 'redis-insight.fomiller-cluster.dev.aws.fomillercloud.com'
+      
+  finalizers:
+    - ingress.k8s.aws/resources
+  labels:
+    app: redisinsight-ingress
+spec:
+  ingressClassName: alb
+  rules:
+    - host: redis-insight.fomiller-cluster.dev.aws.fomillercloud.com
+      http:
+        paths:
+          - path: /
+            backend:
+              service:
+                name: redis-insight-service
+                port:
+                  number: 80
+            pathType: Prefix
+---
+# RedisInsight service with name 'redisinsight-service'
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: fomiller
+  name: redisinsight-service       # name should not be 'redisinsight'
+                                   # since the service creates
+                                   # environment variables that
+                                   # conflicts with redisinsight
+                                   # application's environment
+                                   # variables `REDISINSIGHT_HOST` and
+                                   # `REDISINSIGHT_PORT`
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8001
+  selector:
+    app: redisinsight
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: redisinsight-efs-sc
+provisioner: efs.csi.aws.com
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redisinsight-efs-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: redisinsight-efs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-0eba2124a91761f7e
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redisinsight-pv-claim
+  labels:
+    app: redisinsight
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: default
+---
+# RedisInsight deployment with name 'redisinsight'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redisinsight #deployment name
+  namespace: fomiller
+  labels:
+    app: redisinsight #deployment label
+spec:
+  replicas: 1 #a single replica pod
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: redisinsight #which pods is the deployment managing, as defined by the pod template
+  template: #pod template
+    metadata:
+      labels:
+        app: redisinsight #label for pod/s
+    spec:
+      volumes:
+        - name: db
+          persistentVolumeClaim:
+            claimName: redisinsight-pv-claim
+      initContainers:
+        - name: init
+          image: busybox
+          command:
+            - /bin/sh
+            - '-c'
+            - |
+                            chown -R 1001 /db
+          resources: {}
+          volumeMounts:
+            - name: db
+              mountPath: /db
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      containers:
+        - name:  redisinsight #Container name (DNS_LABEL, unique)
+          image: redislabs/redisinsight:latest #repo/image
+          imagePullPolicy: IfNotPresent #Always pull image
+          volumeMounts:
+          - name: db #Pod volumes to mount into the container's filesystem. Cannot be updated.
+            mountPath: /db
+          ports:
+          - containerPort: 8001 #exposed container port and protocol
+            protocol: TCP
+
