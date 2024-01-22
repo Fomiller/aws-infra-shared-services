@@ -9,11 +9,11 @@ data "aws_iam_user" "aws_terraform" {
   user_name = "AWSTerraform${upper(var.environment)}"
 }
 
-data "aws_iam_policy_document" "elasticache" {
+data "aws_iam_policy_document" "timestream" {
   statement {
     effect = "Allow"
     actions = [
-      "elasticache:*"
+      "timestream:*"
     ]
     resources = ["*"]
   }
