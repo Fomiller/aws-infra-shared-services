@@ -41,6 +41,15 @@ dependency "security" {
     }
 }
 
+dependency "kms" {
+    config_path = "../kms"
+    mock_outputs_merge_strategy_with_state = "shallow"
+    mock_outputs_allowed_terraform_commands = ["validate", "plan", "apply", "destroy"]
+    mock_outputs = {
+        kms_key_arn_master = "arn:aws:kms:us-east-1:${get_env("TF_VAR_account_id")}:key/${uuid()}"
+    }
+}
+
 include "root" {
   path = find_in_parent_folders()
 }
@@ -49,6 +58,7 @@ inputs = {
     iam_role_arn_eks_cluster = dependency.roles.outputs.iam_role_arn_eks_cluster
     iam_role_arn_eks_node_groups = dependency.roles.outputs.iam_role_arn_eks_node_groups
     iam_role_arn_eks_fargate_profile = dependency.roles.outputs.iam_role_arn_eks_fargate_profile
+    kms_key_arn_master = dependency.kms.outputs.kms_key_arn_master
     subnet_ids_private = dependency.vpc.outputs.subnet_ids_private
     subnet_ids_public = dependency.vpc.outputs.subnet_ids_public
     vpc_id = dependency.vpc.outputs.vpc_id

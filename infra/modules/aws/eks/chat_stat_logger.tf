@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "chat_stat_logger" {
     ]
 
     resources = [
-      data.aws_kms_alias.fomiller_master.arn
+      var.kms_key_arn_master
     ]
   }
 }
