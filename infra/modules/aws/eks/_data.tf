@@ -9,6 +9,10 @@ data "aws_eks_cluster_auth" "eks" {
   name = aws_eks_cluster.cluster.id
 }
 
+data "aws_kms_alias" "fomiller_master" {
+  name = "alias/fomiller-master"
+}
+
 # resource "terraform_data" "k8s_fargate_patcher" {
 #   triggers_replace = {
 #     endpoint = aws_eks_cluster.cluster.endpoint

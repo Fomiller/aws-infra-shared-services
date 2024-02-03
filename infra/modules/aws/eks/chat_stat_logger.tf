@@ -29,6 +29,16 @@ data "aws_iam_policy_document" "chat_stat_logger" {
       "*"
     ]
   }
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+    ]
+
+    resources = [
+      data.aws_kms_alias.fomiller_master.arn
+    ]
+  }
 }
 
 resource "aws_iam_role" "chat_stat_logger" {
