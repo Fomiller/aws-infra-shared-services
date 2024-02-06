@@ -10,7 +10,7 @@ resource "aws_iam_role_policy_attachment" "eks_fargate_profile" {
 
 resource "aws_iam_role_policy_attachment" "eks_fargate_profile_elasticache" {
   role       = var.iam_role_name_eks_fargate_profile
-  policy_arn = aws_iam_policy.elasticache.arn
+  policy_arn = aws_iam_policy.timestream.arn
 }
 
 resource "aws_iam_role_policy_attachment" "eks_fargate_profile_logging" {
