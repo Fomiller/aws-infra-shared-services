@@ -5,3 +5,7 @@ output "aws_load_balancer_controller_role_arn" {
 output "eks_cluster_default_security_group_id" {
   value = aws_eks_cluster.cluster.vpc_config[0].cluster_security_group_id
 }
+
+# output "eks_vpc" {
+#   value = aws_eks_cluster.cluster.vpc_config[0]
+# }
