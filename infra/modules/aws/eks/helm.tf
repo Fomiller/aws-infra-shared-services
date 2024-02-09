@@ -1,112 +1,116 @@
-# resource "helm_release" "aws_load_balancer_controller" {
-#   name = "aws-load-balancer-controller"
-#
-#   repository = "https://aws.github.io/eks-charts"
-#   chart      = "aws-load-balancer-controller"
-#   namespace  = "kube-system"
-#   version    = "1.5.5"
-#
-#   set {
-#     name  = "clusterName"
-#     value = aws_eks_cluster.cluster.id
-#   }
-#   set {
-#     name  = "image.tag"
-#     value = "v2.5.1"
-#   }
-#   set {
-#     name  = "replicaCount"
-#     value = 1
-#   }
-#   set {
-#     name  = "serviceAccount.name"
-#     value = "aws-load-balancer-controller"
-#   }
-#   set {
-#     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-#     value = aws_iam_role.aws_load_balancer_controller.arn
-#   }
-#   # EKS Fargate specific
-#   set {
-#     name  = "region"
-#     value = "us-east-1"
-#   }
-#   set {
-#     name  = "vpcId"
-#     value = var.vpc_id
-#   }
-# }
+resource "helm_release" "aws_load_balancer_controller" {
+  name = "aws-load-balancer-controller"
 
-# resource "helm_release" "external_dns" {
-#   name       = "external-dns"
-#   repository = "https://kubernetes-sigs.github.io/external-dns"
-#   chart      = "external-dns"
-#   namespace  = "kube-system"
-#
-#   set {
-#     name  = "provider"
-#     value = "aws"
-#   }
-#   set {
-#     name  = "domainFilters[0]"
-#     value = "${var.namespace}-cluster.dev.aws.fomillercloud.com"
-#   }
-#   set {
-#     name  = "policy"
-#     value = "sync"
-#   }
-#   set {
-#     name  = "aws.region"
-#     value = "us-east-1"
-#   }
-#   set {
-#     name  = "serviceAccount.name"
-#     value = "external-dns"
-#   }
-#   set {
-#     name  = "serviceAccount.create"
-#     value = true
-#   }
-#   set {
-#     name  = "rbac.create"
-#     value = true
-#   }
-#   set {
-#     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-#     value = aws_iam_role.external_dns.arn
-#   }
-# }
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+  version    = "1.5.5"
 
-# resource "helm_release" "argocd" {
-#   name             = "argocd"
-#   repository       = "https://argoproj.github.io/argo-helm"
-#   chart            = "argo-cd"
-#   namespace        = "argocd"
-#   create_namespace = true
-#   version          = "5.35.0"
-#   values           = [file("values/argocd.yaml")]
-# }
+  set {
+    name  = "clusterName"
+    value = aws_eks_cluster.cluster.id
+  }
+  set {
+    name  = "image.tag"
+    value = "v2.5.1"
+  }
+  set {
+    name  = "replicaCount"
+    value = 1
+  }
+  set {
+    name  = "serviceAccount.name"
+    value = "aws-load-balancer-controller"
+  }
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = aws_iam_role.aws_load_balancer_controller.arn
+  }
+  # EKS Fargate specific
+  set {
+    name  = "region"
+    value = "us-east-1"
+  }
+  set {
+    name  = "vpcId"
+    value = var.vpc_id
+  }
+  depends_on = [helm_release.karpenter]
+}
 
-# resource "helm_release" "external_secrets" {
-#   name       = "external-secrets"
-#   repository = "https://charts.external-secrets.io"
-#   chart      = "external-secrets"
-#   namespace  = "kube-system"
-#
-#   set {
-#     name  = "env.AWS_REGION"
-#     value = "us-east-1"
-#   }
-#   set {
-#     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-#     value = aws_iam_role.external_secrets.arn
-#   }
-#   set {
-#     name  = "webhook.port"
-#     value = 9443
-#   }
-# }
-#
+resource "helm_release" "external_dns" {
+  name       = "external-dns"
+  repository = "https://kubernetes-sigs.github.io/external-dns"
+  chart      = "external-dns"
+  namespace  = "kube-system"
+
+  set {
+    name  = "provider"
+    value = "aws"
+  }
+  set {
+    name  = "domainFilters[0]"
+    value = "${var.namespace}-cluster.dev.aws.fomillercloud.com"
+  }
+  set {
+    name  = "policy"
+    value = "sync"
+  }
+  set {
+    name  = "aws.region"
+    value = "us-east-1"
+  }
+  set {
+    name  = "serviceAccount.name"
+    value = "external-dns"
+  }
+  set {
+    name  = "serviceAccount.create"
+    value = true
+  }
+  set {
+    name  = "rbac.create"
+    value = true
+  }
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = aws_iam_role.external_dns.arn
+  }
+  depends_on = [helm_release.karpenter]
+}
+
+resource "helm_release" "argocd" {
+  name             = "argocd"
+  repository       = "https://argoproj.github.io/argo-helm"
+  chart            = "argo-cd"
+  namespace        = "argocd"
+  create_namespace = true
+  version          = "5.35.0"
+  values           = [file("values/argocd.yaml")]
+  depends_on       = [helm_release.karpenter]
+}
+
+resource "helm_release" "external_secrets" {
+  name       = "external-secrets"
+  repository = "https://charts.external-secrets.io"
+  chart      = "external-secrets"
+  namespace  = "kube-system"
+
+  set {
+    name  = "env.AWS_REGION"
+    value = "us-east-1"
+  }
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = aws_iam_role.external_secrets.arn
+  }
+  set {
+    name  = "webhook.port"
+    value = 9443
+  }
+  depends_on = [helm_release.karpenter]
+}
+
 resource "helm_release" "karpenter" {
   namespace        = "karpenter"
   create_namespace = true

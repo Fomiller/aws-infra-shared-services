@@ -10,6 +10,7 @@ resource "aws_subnet" "public" {
     Name                                     = "public-${element(var.azs, count.index)}"
     "kubernetes.io/role/elb"                 = "1"
     "kubernetes.io/cluster/fomiller-cluster" = "owned"
+    "karpenter.sh/discovery"                 = "${var.namespace}-cluster"
   }
 }
 
@@ -22,5 +23,6 @@ resource "aws_subnet" "private" {
     Name                                     = "private-${element(var.azs, count.index)}"
     "kubernetes.io/role/internal-elb"        = "1"
     "kubernetes.io/cluster/fomiller-cluster" = "owned"
+    # "karpenter.sh/discovery"                 = "${var.namespace}-cluster"
   }
 }

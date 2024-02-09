@@ -26,7 +26,8 @@ init dir:
     doppler run \
     --name-transformer tf-var  \
     -- terragrunt init \
-    --terragrunt-working-dir {{infraDir}}/{{dir}}
+    --terragrunt-working-dir {{infraDir}}/{{dir}} \
+    -reconfigure
     
 init-all:
     doppler run \

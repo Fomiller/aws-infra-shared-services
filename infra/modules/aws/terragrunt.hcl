@@ -108,7 +108,7 @@ terraform {
       "import",
       "push",
       "refresh",
-      "output",
+      # "output",
       "init",
       "destroy",
       "validate-inputs",
