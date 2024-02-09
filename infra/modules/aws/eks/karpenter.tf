@@ -9,5 +9,6 @@ module "karpenter" {
 
   create_iam_role   = true
   create_node_iam_role = true
+  node_iam_role_name = "KarpenterNodeRole-${aws_eks_cluster.cluster.name}"
   # node_iam_role_arn = var.iam_role_arn_eks_node_groups
 }
