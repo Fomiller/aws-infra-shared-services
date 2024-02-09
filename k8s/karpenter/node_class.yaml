@@ -4,7 +4,7 @@ metadata:
   name: default
 spec:
   amiFamily: AL2 # Amazon Linux 2
-  role: "KarpenterNodeRole-fomiller-cluster-20240209022613341100000001" # replace with your cluster name
+  role: "KarpenterNodeRole-fomiller-cluster" # replace with your cluster name
   subnetSelectorTerms:
     - tags:
         karpenter.sh/discovery: "fomiller-cluster" # replace with your cluster name
