@@ -35,6 +35,7 @@ resource "helm_release" "aws_load_balancer_controller" {
     name  = "vpcId"
     value = var.vpc_id
   }
+  depends_on = [helm_release.karpenter]
 }
 
 resource "helm_release" "external_dns" {
@@ -75,6 +76,7 @@ resource "helm_release" "external_dns" {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
     value = aws_iam_role.external_dns.arn
   }
+  depends_on = [helm_release.karpenter]
 }
 
 resource "helm_release" "argocd" {
@@ -85,6 +87,7 @@ resource "helm_release" "argocd" {
   create_namespace = true
   version          = "5.35.0"
   values           = [file("values/argocd.yaml")]
+  depends_on       = [helm_release.karpenter]
 }
 
 resource "helm_release" "external_secrets" {
@@ -105,6 +108,32 @@ resource "helm_release" "external_secrets" {
     name  = "webhook.port"
     value = 9443
   }
+  depends_on = [helm_release.karpenter]
+}
+
+resource "helm_release" "karpenter" {
+  namespace        = "karpenter"
+  create_namespace = true
+  name             = "karpenter"
+  repository       = "oci://public.ecr.aws/karpenter"
+  chart            = "karpenter"
+  version          = "v0.34.0"
+
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = module.karpenter.iam_role_arn
+  }
+
+  set {
+    name  = "settings.clusterName"
+    value = aws_eks_cluster.cluster.name
+  }
+
+  set {
+    name  = "settings.clusterEndpoint"
+    value = aws_eks_cluster.cluster.endpoint
+  }
+  depends_on = [module.karpenter]
 }
 
 # resource "helm_release" "metrics-server" {
@@ -122,3 +151,4 @@ resource "helm_release" "external_secrets" {
 #
 #   depends_on = [aws_eks_fargate_profile.kube_system]
 # }
+

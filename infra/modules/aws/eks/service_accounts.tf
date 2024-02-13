@@ -6,6 +6,7 @@ resource "kubernetes_service_account" "fargate_chat_stat" {
       "eks.amazonaws.com/role-arn" = aws_iam_role.chat_stat_logger.arn
     }
   }
+  depends_on = [kubernetes_namespace.chat_stat]
 }
 
 resource "kubernetes_cluster_role_binding_v1" "fargate_chat_stat" {

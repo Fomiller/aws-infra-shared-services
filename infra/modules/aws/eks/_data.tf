@@ -13,6 +13,10 @@ data "aws_kms_alias" "fomiller_master" {
   name = "alias/fomiller-master"
 }
 
+data "aws_iam_roles" "sso" {
+  path_prefix = "/aws-reserved/sso.amazonaws.com/"
+}
+
 # resource "terraform_data" "k8s_fargate_patcher" {
 #   triggers_replace = {
 #     endpoint = aws_eks_cluster.cluster.endpoint

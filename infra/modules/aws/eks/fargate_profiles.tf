@@ -40,6 +40,36 @@ resource "aws_eks_fargate_profile" "chat_stat" {
   }
 }
 
+resource "aws_eks_fargate_profile" "karpenter" {
+  cluster_name           = aws_eks_cluster.cluster.name
+  fargate_profile_name   = "karpenter"
+  pod_execution_role_arn = var.iam_role_arn_eks_fargate_profile
+
+  subnet_ids = var.subnet_ids_private
+
+  selector {
+    namespace = "karpenter"
+    # labels = {
+    #   "compute" = "fargate"
+    # }
+  }
+}
+
+resource "aws_eks_fargate_profile" "core_dns" {
+  cluster_name           = aws_eks_cluster.cluster.name
+  fargate_profile_name   = "core-dns"
+  pod_execution_role_arn = var.iam_role_arn_eks_fargate_profile
+
+  subnet_ids = var.subnet_ids_private
+
+  selector {
+    namespace = "kube-system"
+    labels = {
+      "eks.amazonaws.com/component" = "coredns"
+    }
+  }
+}
+
 # resource "aws_eks_fargate_profile" "argocd" {
 #   cluster_name           = aws_eks_cluster.cluster.name
 #   fargate_profile_name   = "argocd"
