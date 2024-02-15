@@ -4,8 +4,9 @@ resource "aws_kms_key" "master" {
 }
 
 resource "aws_kms_key_policy" "master" {
-  key_id = aws_kms_key.example.id
+  key_id = aws_kms_key.master.id
   policy = jsonencode({
+    Id = "master"
     Statement = [
       {
         Sid    = "Enable IAM User Permissions"
