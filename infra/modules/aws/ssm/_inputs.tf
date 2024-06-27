@@ -1,1 +1,1 @@
-variable "efs_id" { type = string }
+# variable "efs_id" { type = string }
