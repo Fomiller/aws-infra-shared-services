@@ -30,3 +30,12 @@ resource "aws_subnet" "private" {
     # "karpenter.sh/discovery"                 = "${var.namespace}-cluster"
   }
 }
+
+resource "aws_db_subnet_group" "private" {
+  name       = "${var.namespace}-private-db-subnet-group"
+  subnet_ids = toset(aws_subnet.private[*].id)
+
+  tags = {
+    Name = "Private DB Subnet Group"
+  }
+}

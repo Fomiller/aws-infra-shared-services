@@ -5,3 +5,7 @@ output "security_group_id_elasticache" {
 output "security_group_id_eks" {
   value = aws_security_group.eks.id
 }
+
+output "security_group_id_rds" {
+  value = aws_security_group.rds_db_sg.id
+}

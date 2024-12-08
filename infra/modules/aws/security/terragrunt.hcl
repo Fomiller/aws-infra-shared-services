@@ -11,10 +11,6 @@ dependency "vpc" {
     }
 }
 
-include "root" {
-  path = find_in_parent_folders()
-}
-
 inputs = {
     vpc_id = dependency.vpc.outputs.vpc_id
 }

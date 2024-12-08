@@ -17,7 +17,7 @@
 # terraform / terragrunt
 *.terraform
 */**/.terragrunt-cache/
-**/*.gen.tf
+**/_.*.gen.tf
 **/.terraform.lock.hcl
 infra/modules/aws/lambda/bin/
 infra/modules/aws/lambda/*.zip

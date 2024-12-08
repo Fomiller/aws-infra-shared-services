@@ -6,6 +6,9 @@ clean:
     find . -name ".terraform.lock.hcl" -type f | xargs -r rm -rv
     find . -name ".terraform" -type d | xargs -r rm -rv
     find . -name ".terragrunt-cache" -type d | xargs -r rm -rv
+
+doppler-switch env:
+    doppler setup -p aws-infrastructure -c {{env}}
     
 login env=env:
     assume-role login -p {{env}}Terraform
