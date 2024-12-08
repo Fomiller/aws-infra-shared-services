@@ -2,9 +2,10 @@ infraDir := "infra/modules/aws"
 env := 'dev'
 
 clean:
-    rm -rf infra/modules/**/_.*.gen.tf
-    rm -rf infra/modules/**/.terraform.lock.hcl
-    rm -rf infra/modules/**/.terraform
+    find . -name "_.*.gen.tf" -type f | xargs -r rm -rv
+    find . -name ".terraform.lock.hcl" -type f | xargs -r rm -rv
+    find . -name ".terraform" -type d | xargs -r rm -rv
+    find . -name ".terragrunt-cache" -type d | xargs -r rm -rv
     
 login env=env:
     assume-role login -p {{env}}Terraform
