@@ -14,11 +14,15 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-#terraform
+# terraform / terragrunt
 *.terraform
 */**/.terragrunt-cache/
 **/*.gen.tf
 **/.terraform.lock.hcl
+infra/modules/aws/lambda/bin/
+infra/modules/aws/lambda/*.zip
+infra/us-east-1/**/common.tf
+
 
 #env files
 env.list
