@@ -27,14 +27,27 @@ init dir:
     doppler run \
     --name-transformer tf-var  \
     -- terragrunt init \
-    --terragrunt-working-dir {{infraDir}}/{{dir}} \
-    -reconfigure
+    --reconfigure \
+    --terragrunt-working-dir {{infraDir}}/{{dir}}
+
+init-migrate dir:
+    doppler run \
+    --name-transformer tf-var  \
+    -- terragrunt init -migrate-state \
+    --terragrunt-working-dir {{infraDir}}/{{dir}}
     
 init-all:
     doppler run \
     --name-transformer tf-var  \
     -- terragrunt run-all init \
-    --terragrunt-working-dir {{infraDir}}
+    --terragrunt-working-dir {{infraDir}} \
+
+init-all-migrate:
+    doppler run \
+    --name-transformer tf-var  \
+    -- terragrunt run-all init -migrate-state \
+    --terragrunt-working-dir {{infraDir}} \
+    --terragrunt-non-interactive
 
 validate dir:
     doppler run \

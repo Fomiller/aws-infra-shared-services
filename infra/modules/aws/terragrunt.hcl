@@ -1,7 +1,7 @@
 locals {
     namespace = "fomiller"
     app_prefix = "aws-infra"
-    project_name = "aws-infrastructure"
+    project_name = "aws-infra-shared-services"
 }
 
 generate provider {
