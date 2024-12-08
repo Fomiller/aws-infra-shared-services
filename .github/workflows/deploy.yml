@@ -28,7 +28,7 @@ jobs:
     with:
       environment: ${{ contains(fromJSON('["refs/heads/main", "refs/heads/master"]'), github.ref) && 'prod' || 'dev' }}
       infra-dir: infra/modules/aws
-      doppler-project: aws-infrastructure
+      doppler-project: aws-infra-shared-services
     secrets: inherit
 
   Github-Pages:
