@@ -4,7 +4,7 @@ resource "aws_db_instance" "fomiller" {
   engine                 = "postgres"
   engine_version         = "16.3"
   instance_class         = "db.t4g.micro"
-  db_name                = "${var.namespace}-rds"
+  db_name                = var.namespace
   username               = "admin"
   password               = "securepassword"
   db_subnet_group_name   = var.db_subnet_group_name_private
