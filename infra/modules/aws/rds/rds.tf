@@ -5,8 +5,8 @@ resource "aws_db_instance" "fomiller" {
   engine_version         = "16.3"
   instance_class         = "db.t4g.micro"
   db_name                = var.namespace
-  username               = "admin"
-  password               = "securepassword"
+  username               = var.rds_username
+  password               = var.rds_password
   db_subnet_group_name   = var.db_subnet_group_name_private
   vpc_security_group_ids = [var.security_group_id_rds]
 
