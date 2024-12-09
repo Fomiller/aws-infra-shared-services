@@ -9,3 +9,7 @@ output "security_group_id_eks" {
 output "security_group_id_rds" {
   value = aws_security_group.rds_db_sg.id
 }
+
+output "security_group_id_bastion" {
+  value = aws_security_group.bastion_sg.id
+}

@@ -15,6 +15,7 @@ resource "aws_db_instance" "fomiller" {
   publicly_accessible        = false
   storage_encrypted          = true
   skip_final_snapshot        = true
+  apply_immediately          = true
 
   tags = {
     Name = "RDS Postgres Instance"

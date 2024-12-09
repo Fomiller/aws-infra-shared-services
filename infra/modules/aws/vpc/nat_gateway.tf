@@ -13,7 +13,7 @@ module "fck-nat" {
   # source = "RaJiska/fck-nat/aws"
   # version = "v1.2.0"
 
-  name          = "${var.namespace}-my-fck-nat"
+  name          = "${var.namespace}-${var.environment}-fck-nat"
   vpc_id        = aws_vpc.aws_infra.id
   subnet_id     = aws_subnet.public[0].id
   instance_type = "t4g.nano"
