@@ -1,5 +1,5 @@
 resource "aws_security_group" "vpc_public_ingress" {
-  name        = "${var.namespace} VPC Public Ingress SG"
+  name        = "${var.namespace}-${var.environment}-vpc-public-ingress-sg"
   description = "Allow incoming HTTP and HTTPS traffic"
   vpc_id      = var.vpc_id
 
@@ -20,11 +20,16 @@ resource "aws_security_group" "vpc_public_ingress" {
   tags = {
     Name = "${var.namespace}-${var.environment}-vpc-public-ingress-sg"
   }
+
   lifecycle { create_before_destroy = true }
+
+  timeouts {
+    delete = "5m"
+  }
 }
 
 resource "aws_security_group" "rds_db_sg" {
-  name        = "db-sg"
+  name        = "${var.namespace}-${var.environment}-rds-sg"
   description = "Allow internal traffic to RDS"
   vpc_id      = var.vpc_id
 
@@ -45,7 +50,12 @@ resource "aws_security_group" "rds_db_sg" {
   tags = {
     Name = "${var.namespace}-${var.environment}-rds-sg"
   }
+
   lifecycle { create_before_destroy = true }
+
+  timeouts {
+    delete = "5m"
+  }
 }
 
 resource "aws_security_group" "bastion_sg" {
@@ -70,26 +80,41 @@ resource "aws_security_group" "bastion_sg" {
   tags = {
     Name = "${var.namespace}-${var.environment}-bastion-sg"
   }
+
   lifecycle { create_before_destroy = true }
+
+  timeouts {
+    delete = "5m"
+  }
 }
 
 resource "aws_security_group" "eks" {
-  name   = "${var.namespace}-eks-sg"
+  name   = "${var.namespace}-${var.environment}-eks-sg"
   vpc_id = var.vpc_id
 
   tags = {
     Name = "${var.namespace}-${var.environment}-eks-sg"
   }
+
   lifecycle { create_before_destroy = true }
+
+  timeouts {
+    delete = "5m"
+  }
 }
 
 resource "aws_security_group" "elasticache" {
-  name   = "${var.namespace}-elasticache-sg"
+  name   = "${var.namespace}-${var.environment}-elasticache-sg"
   vpc_id = var.vpc_id
 
   tags = {
     Name = "${var.namespace}-${var.environment}-elasticache-sg"
   }
+
   lifecycle { create_before_destroy = true }
+
+  timeouts {
+    delete = "5m"
+  }
 }
 
