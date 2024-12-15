@@ -1,7 +1,7 @@
 import? 'just/base.just'
 import? 'just/terraform.just'
 
-project := "dungeons-and-llamas"
+project := "aws-infra-shared-services"
 infraDir := "infra/modules/aws/"
 env := "dev"
 cluster := "fomiller-cluster"
