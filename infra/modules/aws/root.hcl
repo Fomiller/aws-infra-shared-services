@@ -19,14 +19,13 @@ provider "aws" {
   }
 }
 
+# Chains off whatever the caller already is — the github-actions role in CI,
+# an SSO session locally. No static key.
 provider "aws" {
   alias = "org"
-  access_key = "${get_env("TF_VAR_org_aws_access_key_id")}"
-  secret_key = "${get_env("TF_VAR_org_aws_secret_access_key")}"
   assume_role {
-      role_arn = format("arn:aws:iam::%s:role/%s",
+      role_arn = format("arn:aws:iam::%s:role/github-actions",
         "${get_env("TF_VAR_org_account_id")}",
-        "${get_env("TF_VAR_aws_deployer_role")}",
       )
   }
   region = "us-east-1"
