@@ -1,4 +1,8 @@
-skip = true
+exclude {
+  if      = true
+  actions = ["all"]
+}
+
 
 dependencies {
     paths = ["../route53", "../cloudwatch"]
@@ -51,7 +55,7 @@ dependency "kms" {
 }
 
 include "root" {
-  path = find_in_parent_folders()
+  path = find_in_parent_folders("root.hcl")
 }
 
 inputs = {
