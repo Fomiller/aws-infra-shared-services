@@ -2,6 +2,9 @@ name: 'Terragrunt Deploy'
   
 on:
   push:
+    branches:
+      - develop
+      - main
     paths:
       - '.github/**'
       - 'modules/**'
