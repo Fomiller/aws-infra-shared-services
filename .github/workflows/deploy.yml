@@ -8,6 +8,7 @@ on:
       - 'infra/**'
       - 'justfile'
       - 'just/**'
+      - 'docs/**'
    
 jobs:
   Pre-check:
@@ -38,4 +39,8 @@ jobs:
 
   Github-Pages:
     needs: Pre-check
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     uses: fomiller/gh-actions/.github/workflows/mdbook.yaml@main
