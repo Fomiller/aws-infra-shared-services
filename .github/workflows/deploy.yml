@@ -24,11 +24,15 @@ jobs:
   Deploy-infra:
     name: 'Deploy Infra'
     needs: Pre-check
+    permissions:
+      id-token: write
+      contents: read
     uses: fomiller/gh-actions/.github/workflows/terragrunt.yaml@main
     with:
       environment: ${{ contains(fromJSON('["refs/heads/main", "refs/heads/master"]'), github.ref) && 'prod' || 'dev' }}
       infra-dir: infra/modules/aws
       doppler-project: aws-infra-shared-services
+      use-oidc: true
     secrets: inherit
 
   Github-Pages:
