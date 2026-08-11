@@ -2,6 +2,23 @@ locals {
     namespace = "fomiller"
     app_prefix = "aws-infra"
     project_name = "aws-infra-shared-services"
+
+    # A few units manage resources in the org account. Locally that is a second
+    # SSO profile. CI has no profiles, so there the org provider chains off the
+    # github-actions role the job already assumed. Either way, no static key.
+    org_profile = get_env("AWS_ORG_PROFILE", "")
+
+    org_auth_local = <<-EOT
+      profile = "${get_env("AWS_ORG_PROFILE", "")}"
+    EOT
+
+    org_auth_ci = <<-EOT
+      assume_role {
+          role_arn = "arn:aws:iam::${get_env("TF_VAR_org_account_id", "")}:role/github-actions"
+        }
+    EOT
+
+    org_auth = local.org_profile != "" ? local.org_auth_local : local.org_auth_ci
 }
 
 generate provider {
@@ -21,14 +38,7 @@ provider "aws" {
 
 provider "aws" {
   alias = "org"
-  access_key = "${get_env("TF_VAR_org_aws_access_key_id")}"
-  secret_key = "${get_env("TF_VAR_org_aws_secret_access_key")}"
-  assume_role {
-      role_arn = format("arn:aws:iam::%s:role/%s",
-        "${get_env("TF_VAR_org_account_id")}",
-        "${get_env("TF_VAR_aws_deployer_role")}",
-      )
-  }
+  ${local.org_auth}
   region = "us-east-1"
   default_tags {
     tags = {
