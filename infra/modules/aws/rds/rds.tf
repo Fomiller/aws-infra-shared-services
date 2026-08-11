@@ -2,7 +2,7 @@ resource "aws_db_instance" "fomiller" {
   allocated_storage      = 22
   max_allocated_storage  = 100
   engine                 = "postgres"
-  engine_version         = "16.3"
+  engine_version         = "16.13"
   instance_class         = "db.t4g.micro"
   db_name                = var.namespace
   identifier             = "${var.namespace}-shared-${var.environment}-db"
